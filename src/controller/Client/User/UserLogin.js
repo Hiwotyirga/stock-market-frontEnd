@@ -19,6 +19,7 @@ function UserLogin() {
     try {
       const response = await axios.post('http://localhost:9000/auth/login', data);
       setErrorMessage(''); 
+       localStorage.setItem('token', response.data.access_token);
       navigate('/userList');
     } catch (error) {
       console.error('There was an error submitting the form!', error);

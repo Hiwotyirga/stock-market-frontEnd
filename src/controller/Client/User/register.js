@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import '../../../App.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userList, setUserList] = useState([]);
+  const navigate =useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +22,8 @@ function Register() {
 
     try {
       const response = await axios.post("http://localhost:9000", data);
-      setUserList(response.data);  
+      setUserList(response.data); 
+      navigate('/userList'); 
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }

@@ -8,6 +8,7 @@ function UserList() {
 
     axios.get("http://localhost:9000").then((response)=>{
     setUserList(response.data)
+    
     }) 
     })
   return (
