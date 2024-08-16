@@ -37,4 +37,23 @@ input {
   border-radius: 5px; 
   border: 1px solid #ccc; 
 }
+.back{
+  background-color: chocolate;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.wellcome{
+  text-align: center;
 
+
+}
+.wellcome:hover{
+  color: aqua;
+  transform: scale(1.05);
+}
+img{
+  width:
+}

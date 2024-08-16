@@ -23,7 +23,7 @@ function Register() {
     try {
       const response = await axios.post("http://localhost:9000", data);
       setUserList(response.data); 
-      navigate('/userList'); 
+      navigate('/userlogin'); 
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
@@ -33,63 +33,67 @@ function Register() {
   
 
   return (   
-<div className='body'>
-{/* <div><button><Link to='/userList'>Admin</Link></button></div> */}
-<div className="App">
-      <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <div>
-            <label htmlFor="name">Name</label>
-          </div>
-          <input
-            type='text'
-            placeholder='Enter name'
-            className='form-control'
-            id='name'
-            value={name}
-            name='name'
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className='form-group'>
-          <div>
-            <label htmlFor="email">Email</label>
-          </div>
-          <input
-            type='email'
-            placeholder='Enter Email'
-            name='email'
-            id='email'
-            value={email}
-            className='form-control'
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className='form-group'>
-          <div>
-            <label htmlFor="pass">Enter password</label>
-          </div>
-          <input
-            type='password'
-            name='password'
-            id='pass'
-            value={password}
-            className='form-control'
-            placeholder='Enter Password'
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className='form-group'>
-          <button type='submit'>Register</button>
-        </div>
-        <button><Link to='/userLogin'>Login</Link></button>
-      </form>
-      <div > 
-      </div>
-     
-    </div>
-   </div>
+<div>
 
+<div className='body'>
+  
+  
+  <div className="App">
+        <form onSubmit={handleSubmit}>
+          <div className='form-group'>
+            <div>
+              <label htmlFor="name">Name</label>
+            </div>
+            <input
+              type='text'
+              placeholder='Enter name'
+              className='form-control'
+              id='name'
+              value={name}
+              name='name'
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className='form-group'>
+            <div>
+              <label htmlFor="email">Email</label>
+            </div>
+            <input
+              type='email'
+              placeholder='Enter Email'
+              name='email'
+              id='email'
+              value={email}
+              className='form-control'
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className='form-group'>
+            <div>
+              <label htmlFor="pass">Enter password</label>
+            </div>
+            <input
+              type='password'
+              name='password'
+              id='pass'
+              value={password}
+              className='form-control'
+              placeholder='Enter Password'
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className='form-group'>
+            <button type='submit'>Register</button>
+          </div>
+          <button><Link to='/userLogin'>Login</Link></button>
+        </form>
+        <div > 
+        </div>
+       
+      </div>
+     </div>
+  
+</div>
     
   );
 }

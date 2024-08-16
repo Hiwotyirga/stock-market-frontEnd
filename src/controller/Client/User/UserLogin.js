@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function UserLogin() {
   const [name, setName] = useState('');
@@ -20,7 +21,7 @@ function UserLogin() {
       const response = await axios.post('http://localhost:9000/auth/login', data);
       setErrorMessage(''); 
        localStorage.setItem('token', response.data.access_token);
-      navigate('/userList');
+      navigate('/userdashbord');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
       if (error.response && error.response.status === 401) {
@@ -64,6 +65,8 @@ function UserLogin() {
           <div className='form-group'>
             <button type='submit'>Login</button>
           </div>
+          <button><Link to='/register'>Register</Link></button>
+
         </form>
       </div>
     </div>
