@@ -1,28 +1,40 @@
-
-body{
+.body {
   background-image: url('assert/istockphoto-1496154102-1024x1024.jpg');
-
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.App{
+
+.App {
   border: solid;
-  width: 300px;
-  height: 350px;
-  margin: 100px 0px 0px 400px;
+  width: 300px; /* Adjusted width for better visibility */
   background-color: rgb(128, 0, 111);
   border-radius: 30px;
-  
+  text-align: center;
+  padding: 40px; /* Adjusted padding for better spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added a slight shadow for better aesthetics */
+
 }
-#login{
-  margin-left: 15px;
-  
-}
-form{
+form {
   display: flex;
   flex-direction: column;
-  padding: 70px;
-  gap: 20px;
+  gap: 20px; 
   font-style: normal;
-  
-  
-  
 }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 10px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+}
+

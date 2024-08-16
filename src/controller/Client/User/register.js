@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../../../App.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Register() {
   const [name, setName] = useState("");
@@ -27,17 +28,12 @@ function Register() {
 
     
   };
-  useEffect(()=>{
-
-  axios.get("http://localhost:9000").then((response)=>{
-  setUserList(response.data)
-  })
-
   
-  })
 
-  return (
-    <div className="App">
+  return (   
+<div className='body'>
+{/* <div><button><Link to='/userList'>Admin</Link></button></div> */}
+<div className="App">
       <form onSubmit={handleSubmit}>
         <div className='form-group'>
           <div>
@@ -84,10 +80,15 @@ function Register() {
         <div className='form-group'>
           <button type='submit'>Register</button>
         </div>
+        <button><Link to='/userLogin'>Login</Link></button>
       </form>
       <div > 
       </div>
+     
     </div>
+   </div>
+
+    
   );
 }
 
