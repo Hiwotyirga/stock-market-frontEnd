@@ -21,7 +21,7 @@ function Register() {
     };
 
     try {
-      const response = await axios.post("http://localhost:9000", data);
+      const response = await axios.post("http://localhost:8080", data);
       setUserList(response.data); 
       navigate('/userlogin'); 
     } catch (error) {

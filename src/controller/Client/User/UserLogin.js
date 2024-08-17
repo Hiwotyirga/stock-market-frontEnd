@@ -18,9 +18,13 @@ function UserLogin() {
     };
 
     try {
-      const response = await axios.post('http://localhost:9000/auth/login', data);
+      const response = await axios.post('http://localhost:8080/auth/login', data);
       setErrorMessage(''); 
-       localStorage.setItem('token', response.data.access_token);
+      const token = response.data.access_token;
+      localStorage.setItem('token', token); // Save the token in localStorage
+  
+      // Log the token to the console
+      console.log('Access Token:', token);
       navigate('/userdashbord');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
