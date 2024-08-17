@@ -8,6 +8,10 @@ import UserDashBord from './controller/Client/User/UserDashBord';
 import AdminDashBord from './controller/Admin/user/AdminDashBord';
 import AdminLogin from './controller/Admin/user/AdminLogin';
 import AdminRegister from './controller/Admin/user/AdminRegister';
+import ContentLogin from './controller/Admin/content/contentLogin';
+// import ContentRegister from './controller/Admin/content/ContentRegister';
+import ContentRegister from './controller/Admin/content/contentRegister';
+import Role from './controller/Admin/content/Role';
 
 function App() {
   return (
@@ -21,7 +25,11 @@ function App() {
           <Route path='/admindashbord' element={<AdminDashBord  />}/>
           <Route path='/' element={<HomePage />}/>
           <Route path='/adminlogin' element={<AdminLogin />}/>
-          <Route path='/adminregister' element={<AdminRegister />}/>
+          <Route path='/adminuserlogin' element={<AdminRegister />}/>
+          <Route path='/admincontentlogin' element={ <ContentLogin />}/>
+          {/* <Route path='/adminuserregister' element={<ContentRegister />}/> */}
+          <Route path='/adminuserregister' element={<ContentRegister />}/>
+          <Route path='/role' element={<Role />}/>
         </Routes>
       </div>
     </Router>

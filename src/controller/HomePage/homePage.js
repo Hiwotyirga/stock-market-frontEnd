@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom';
 function HomePage() {
   return (
     <div className='back'>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <h1 className='wellcome'>Welcome</h1>
+      <div style={{ display: "flex", flexDirection: "row"}}>
+        <h1 className='wellcome' style={{textAlign:"center", justifyContent:"center", margin:"150px 0px 0px 150px" }}><h1 style={{fontSize:"100px"}}>Welcome</h1></h1>
 
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft:"500px"}}>
+        <div style={{ display: "flex", flexDirection: "row", marginLeft:"60px",
+          padding:"0px"
+        }}>
           {/* Register Dropdown */}
           <Dropdown>
             <Dropdown.Toggle variant="secondary" id="register-dropdown">
@@ -17,16 +19,17 @@ function HomePage() {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="/userregister">User</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/register">User</Dropdown.Item>
               {/* Admin Nested Dropdown */}
               <Dropdown>
-                <Dropdown.Toggle variant="secondary" id="register-admin-dropdown">
+                {/* <Dropdown.Toggle variant="secondary" id="register-admin-dropdown">
                   Admin
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
+                </Dropdown.Toggle> */}
+                {/* <Dropdown.Menu>
                   <Dropdown.Item as={Link} to="/adminuserregister">User Admin</Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/admincontentregister">Content Admin</Dropdown.Item>
-                </Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/adminuserregister">Content Admin</Dropdown.Item>
+                </Dropdown.Menu> */}
+                 <Dropdown.Item as={Link} to="/role">Admin</Dropdown.Item>
               </Dropdown>
             </Dropdown.Menu>
           </Dropdown>
@@ -49,8 +52,32 @@ function HomePage() {
                   <Dropdown.Item as={Link} to="/admincontentlogin">Content Admin</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
+              
             </Dropdown.Menu>
           </Dropdown>
+          {/* <Dropdown style={{ marginLeft: '10px' }}>
+            <Dropdown.Toggle variant="secondary" id="admin-options-dropdown">
+              Admin Options
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/adminregister">Register Admin</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/adminlogin">Login Admin</Dropdown.Item>
+              <Dropdown.Divider /> */}
+              {/* Nested Dropdown */}
+
+
+              {/* <Dropdown>
+                <Dropdown.Toggle variant="secondary" id="more-options-dropdown">
+                  More Options
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/adminsettings">Settings</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/adminreports">Reports</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Dropdown.Menu>
+          </Dropdown> */}
         </div>
 
         <div className="photo-circle">

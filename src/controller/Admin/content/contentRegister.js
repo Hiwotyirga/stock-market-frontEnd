@@ -3,10 +3,11 @@ import '../../../App.css';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Register() {
+function ContentRegister() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const [userList, setUserList] = useState([]);
   const navigate =useNavigate()
 
@@ -18,10 +19,11 @@ function Register() {
       name,
       email,
       password,
+      roleId:[]
     };
 
     try {
-      const response = await axios.post("http://localhost:8080", data);
+      const response = await axios.post("http://localhost:8080/adminRegister", data);
       setUserList(response.data); 
       navigate('/userlogin'); 
     } catch (error) {
@@ -98,4 +100,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default ContentRegister;

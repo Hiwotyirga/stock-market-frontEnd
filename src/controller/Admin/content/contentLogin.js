@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-function UserLogin() {
+function  ContentLogin() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,13 +18,9 @@ function UserLogin() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', data);
+      const response = await axios.post('http://localhost:8080/auth/login/admin', data);
       setErrorMessage(''); 
-      const token = response.data.access_token;
-      localStorage.setItem('token', token); // Save the token in localStorage
-  
-      // Log the token to the console
-      console.log('Access Token:', token);
+       localStorage.setItem('token', response.data.access_token);
       navigate('/userdashbord');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
@@ -34,6 +30,7 @@ function UserLogin() {
         setErrorMessage('An error occurred. Please try again.');
       }
     }
+    navigate('/admindashbord');
   };
 
   return (
@@ -69,7 +66,7 @@ function UserLogin() {
           <div className='form-group'>
             <button type='submit'>Login</button>
           </div>
-          <button><Link to='/register' style={{color:"black"}}>Register</Link></button>
+          <button><Link to='/adminregister'>Register</Link></button>
 
         </form>
       </div>
@@ -77,4 +74,4 @@ function UserLogin() {
   );
 }
 
-export default UserLogin;
+export default ContentLogin;
