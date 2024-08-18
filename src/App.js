@@ -13,12 +13,16 @@ import ContentRegister from './controller/Admin/content/ContentRegister';
 // import ContentRegister from './controller/Admin/content/contentRegister';
 import Role from './controller/Admin/content/Role';
 import ContentDashBoard from './controller/Admin/content/ContentDashBoard';
+import StockNews from './controller/Client/User/StockNews';
+import UserDashBoard from './controller/Client/User/UserDashBord';
 
 function App() {
+  const stockTicker = 'IBM';
   return (
     <Router>
       <div>
         <Routes>
+          <Route path='/userdashboard' element={<UserDashBoard />}/>
           <Route path='/register' element={<Register />} />
           <Route path='/userList' element={<UserList />}/>
           <Route path='/userlogin' element={<UserLogin />}/>
@@ -27,6 +31,7 @@ function App() {
           <Route path='/adminlogin' element={ <ContentLogin />}/>
           <Route path='/admiregister/:roleId' element={<ContentRegister />}/>
           <Route path='/role' element={<Role />}/>
+          <Route path='/stocknews' element={<StockNews ticker={stockTicker} />} />
         </Routes>
       </div>
     </Router>

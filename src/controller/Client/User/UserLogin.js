@@ -25,7 +25,7 @@ function UserLogin() {
   
       // Log the token to the console
       console.log('Access Token:', token);
-      // navigate('/admindashbord');
+      navigate('/userdashboard');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
       if (error.response && error.response.status === 401) {

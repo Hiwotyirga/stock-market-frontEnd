@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../../../App.css';
-import StockNews from '../../Client/User/StockNews';
+import StockNews from './StockNews';
 
-function ContentDashBoard() {
+
+function  UserDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('Home');
 
@@ -81,7 +82,7 @@ function ContentDashBoard() {
         <h1>Welcome to the Dashboard</h1>
       </div> */}
       <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
-        {activeTab === 'Home' && <h1><StockNews/></h1>}
+        {activeTab === 'Home' && <h1><StockNews /></h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
         {activeTab === 'Map' && <h1>Hello Map</h1>}
         {activeTab === 'Planner' && <h1>Hello Planner</h1>}
@@ -90,4 +91,4 @@ function ContentDashBoard() {
   );
 }
 
-export default ContentDashBoard;
+export default UserDashBoard;
