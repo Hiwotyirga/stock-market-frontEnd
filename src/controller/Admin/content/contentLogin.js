@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import {jwtDecode} from 'jwt-decode';
 
-function  ContentLogin() {
+function ContentLogin() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -20,8 +20,12 @@ function  ContentLogin() {
     try {
       const response = await axios.post('http://localhost:8080/auth/login/admin', data);
       setErrorMessage(''); 
-       localStorage.setItem('token', response.data.access_token);
-      navigate('/userdashbord');
+      const token = response.data.access_token;
+      localStorage.setItem('token', token); 
+  
+      // Log the token to the console
+      console.log('Access Token:', token);
+      navigate('/contentdashbord');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
       if (error.response && error.response.status === 401) {
@@ -30,7 +34,6 @@ function  ContentLogin() {
         setErrorMessage('An error occurred. Please try again.');
       }
     }
-    navigate('/admindashbord');
   };
 
   return (
@@ -66,8 +69,6 @@ function  ContentLogin() {
           <div className='form-group'>
             <button type='submit'>Login</button>
           </div>
-          <button><Link to='/adminregister'>Register</Link></button>
-
         </form>
       </div>
     </div>

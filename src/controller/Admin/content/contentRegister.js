@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import '../../../App.css';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function ContentRegister() {
+    const {roleId}=useParams()
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,13 +21,13 @@ function ContentRegister() {
       name,
       email,
       password,
-      roleId:[]
+    //   roleId:[]
     };
 
     try {
-      const response = await axios.post("http://localhost:8080/adminRegister", data);
+      const response = await axios.post(`http://localhost:8080/${roleId}`, data);
       setUserList(response.data); 
-      navigate('/userlogin'); 
+      navigate('/adminlogin'); 
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
@@ -87,7 +89,7 @@ function ContentRegister() {
           <div className='form-group'>
             <button type='submit'>Register</button>
           </div>
-          <button><Link to='/userLogin ' style={{color:"black"}}>Login</Link></button>
+          <button><Link to='/adminlogin ' style={{color:"black"}}>Login</Link></button>
         </form>
         <div > 
         </div>

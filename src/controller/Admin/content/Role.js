@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import '../../../App.css';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Role() {
+    
   const [name, setName] = useState("");
 //   const [email, setEmail] = useState("");
 //   const [password, setPassword] = useState("");
   
   const [userList, setUserList] = useState([]);
   const navigate =useNavigate()
+  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +28,10 @@ function Role() {
     try {
       const response = await axios.post("http://localhost:8080/role", data);
       setUserList(response.data); 
-      navigate('/adminuserregister'); 
+      const roleId = response.data.id; // Adjust based on your backend response
+
+      // Navigate to the admin registration page with the roleId
+      navigate(`/admiregister/${roleId}`);
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }
