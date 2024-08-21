@@ -12,7 +12,7 @@
 .App {
   border: solid;
   width: 300px; /* Adjusted width for better visibility */
-  background-color: rgb(128, 0, 111);
+  /* background-color: rgb(128, 0, 111); */
   border-radius: 30px;
   text-align: center;
   padding: 40px; /* Adjusted padding for better spacing */
@@ -156,6 +156,18 @@ h1 {
 
 .wellcome {
   /* Style your welcome text */
+}
+@media screen and (min-width: 600px) {
+  .nav__items svg {
+    width: 32px;
+    height: 32px;
+    left: -15px;
+  }
+}
+@media screen and (min-width: 600px) {
+  .nav__cont {
+    width: 80px;
+  }
 }
 
 .photo-circle {

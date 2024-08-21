@@ -29,8 +29,9 @@ function App() {
           <Route path='/contentdashbord' element={<ContentDashBoard />}/>
           <Route path='/' element={<HomePage />}/>
           <Route path='/adminlogin' element={ <ContentLogin />}/>
-          <Route path='/admiregister/:roleId' element={<ContentRegister />}/>
+          <Route path='/admiregister' element={<ContentRegister />}/>
           <Route path='/role' element={<Role />}/>
+          <Route path='/contentlogin' element={<ContentLogin />}/>
           <Route path='/stocknews' element={<StockNews ticker={stockTicker} />} />
         </Routes>
       </div>

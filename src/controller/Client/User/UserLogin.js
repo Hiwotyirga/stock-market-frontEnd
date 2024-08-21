@@ -19,12 +19,11 @@ function UserLogin() {
 
     try {
       const response = await axios.post('http://localhost:8080/auth/login', data);
-      setErrorMessage(''); 
+      setErrorMessage('');
       const token = response.data.access_token;
       localStorage.setItem('token', token); // Save the token in localStorage
-  
-      // Log the token to the console
-      console.log('Access Token:', token);
+
+      // Navigate to the user dashboard
       navigate('/userdashboard');
     } catch (error) {
       console.error('There was an error submitting the form!', error);
@@ -69,8 +68,7 @@ function UserLogin() {
           <div className='form-group'>
             <button type='submit'>Login</button>
           </div>
-          <button><Link to='/register' style={{color:"black"}}>Register</Link></button>
-
+          <button><Link to='/register' style={{ color: 'black' }}>Register</Link></button>
         </form>
       </div>
     </div>

@@ -31,7 +31,7 @@ function Role() {
       const roleId = response.data.id; // Adjust based on your backend response
 
       // Navigate to the admin registration page with the roleId
-      navigate(`/admiregister/${roleId}`);
+      // navigate(`/admiregister/${roleId}`);
     } catch (error) {
       console.error("There was an error submitting the form!", error);
     }

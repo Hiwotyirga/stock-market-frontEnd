@@ -25,7 +25,7 @@ function ContentRegister() {
     };
 
     try {
-      const response = await axios.post(`http://localhost:8080/${roleId}`, data);
+      const response = await axios.post(`http://localhost:8080/admin`, data);
       setUserList(response.data); 
       navigate('/adminlogin'); 
     } catch (error) {

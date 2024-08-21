@@ -1,0 +1,63 @@
+/* Container for the form */
+.form-container {
+    width: 40%; /* Decrease the width to half of the original */
+    max-width: 300px; /* Adjust max-width to maintain a reasonable size */
+    margin: 0 auto;
+    padding: 10px; /* Decrease padding to match the reduced size */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow size */
+    background-color: #f9f9f9;
+  }
+  
+  /* Style for form labels */
+  form label {
+    display: block;
+    margin-bottom: 4px; /* Reduce margin to fit the smaller form */
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Style for form inputs */
+  form input[type="text"],
+  form input[type="file"] {
+    width: calc(100% - 18px); /* Decrease width to fit the smaller container */
+    padding: 5px; /* Reduce padding to fit the smaller input */
+    margin-bottom: 8px; /* Reduce margin to fit the smaller form */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px; /* Adjust font size to fit the smaller inputs */
+    box-sizing: border-box;
+  }
+  
+  /* Style for the submit button */
+  form button {
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px; /* Reduce padding to fit the smaller button */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px; /* Adjust font size to fit the smaller button */
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Style for the results */
+  .results {
+    margin-top: 10px; /* Reduce margin to fit the smaller form */
+  }
+  
+  .results p {
+    margin: 3px 0; /* Reduce margin to fit the smaller form */
+    font-size: 14px; /* Adjust font size to fit the smaller results */
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px; /* Adjust font size to fit the smaller error message */
+    margin-top: 5px; /* Reduce margin to fit the smaller form */
+  }
+  

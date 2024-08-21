@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import {jwtDecode} from 'jwt-decode';
 
 function ContentLogin() {
@@ -69,6 +70,7 @@ function ContentLogin() {
           <div className='form-group'>
             <button type='submit'>Login</button>
           </div>
+          <button><Link to='/admiregister' style={{color:"black"}}>Register</Link></button>
         </form>
       </div>
     </div>
