@@ -15,9 +15,9 @@ import Role from './controller/Admin/content/Role';
 import ContentDashBoard from './controller/Admin/content/ContentDashBoard';
 import StockNews from './controller/Client/User/StockNews';
 import UserDashBoard from './controller/Client/User/UserDashBord';
+import FileList from './controller/Admin/content/News/fileLIst';
 
 function App() {
-  const stockTicker = 'IBM';
   return (
     <Router>
       <div>
@@ -32,7 +32,8 @@ function App() {
           <Route path='/admiregister' element={<ContentRegister />}/>
           <Route path='/role' element={<Role />}/>
           <Route path='/contentlogin' element={<ContentLogin />}/>
-          <Route path='/stocknews' element={<StockNews ticker={stockTicker} />} />
+          {/* <Route path='/stocknews' element={<StockNews ticker={stockTicker} />} /> */}
+          <Route path='/filelist' element={<FileList />}/>
         </Routes>
       </div>
     </Router>

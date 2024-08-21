@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import './file.css'; // Ensure this path is correct
+import { Link } from 'react-router-dom';
 
 function FilePost() {
   const [content, setContent] = useState('');
@@ -47,7 +48,9 @@ function FilePost() {
   };
 
   return (
-    <div className="form-container">
+   <div style={{display:"flex", flexDirection:"row"}} >
+   
+     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label htmlFor="file">Upload File</label>
         <input type="file" id="file" onChange={handleFileChange} />
@@ -82,6 +85,10 @@ function FilePost() {
 
       {error && <p className="error">{error}</p>}
     </div>
+    <div>
+      <button><Link to='/filelist'>File list</Link></button>
+    </div>
+   </div>
   );
 }
 
