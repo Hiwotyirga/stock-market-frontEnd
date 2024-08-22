@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../../../App.css';
-import StockNews from '../../Client/User/StockNews';
-import FilePost from './News/filePost';
-import VideoPost from './News/videoPost';
+import '../../App.css';
+import StockNews from '../Client/StockNews';
+// import FilePost from './News/filePost';
+// import VideoPost from './News/videoPost';
 
 function ContentDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
@@ -112,8 +112,8 @@ function ContentDashBoard() {
         {activeTab === 'User Admin' && <h1>Hello User Admin</h1>}
         {activeTab === 'Content Admin' && <h1>Hello Content Admin</h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
-        {activeTab === 'File' && <FilePost />}
-        {activeTab === 'Planner' && <h1><VideoPost /></h1>}
+        {/* {activeTab === 'File' && <FilePost />} */}
+        {/* {activeTab === 'Planner' && <h1><VideoPost /></h1>} */}
         {activeTab === 'Settings' && <h1>Hello Settings</h1>}
       </div>
     </div>

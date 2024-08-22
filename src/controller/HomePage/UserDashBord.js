@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../../../App.css';
-import StockNews from './StockNews';
+import '../../App.css';
+import StockNews from '../Client/StockNews';
 
 
 function  UserDashBoard() {
