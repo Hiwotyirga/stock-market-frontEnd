@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './file.css'; // Ensure this path is correct
 import { Link } from 'react-router-dom';
 
-function FilePost() {
+function VideoPost() {
   const [content, setContent] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
@@ -35,7 +35,7 @@ function FilePost() {
     formData.append('content', content);
 
     try {
-      const res = await axios.post('http://localhost:8080/upload/media', formData, {
+      const res = await axios.post('http://localhost:8080/upload/image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -74,14 +74,14 @@ function FilePost() {
         <button type="submit">Submit</button>
       </form>
 
-      {/* {list && (
+      {list && (
         <div className="results">
           <p>Image URL: {list.imageUrl}</p>
           <p>Description: {list.description}</p>
           <p>Content: {list.content}</p>
           <p>Post Time: {list.postTime}</p>
         </div>
-      )} */}
+      )}
 
       {error && <p className="error">{error}</p>}
     </div>
@@ -92,4 +92,4 @@ function FilePost() {
   );
 }
 
-export default FilePost;
+export default VideoPost;

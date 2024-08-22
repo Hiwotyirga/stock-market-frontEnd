@@ -34,7 +34,7 @@ function FileList() {
 
   const handleDelete = async (filename) => {
     try {
-      await axios.delete(`http://localhost:8080/upload/image/${filename}`);
+      await axios.delete(`http://localhost:8080/upload/files/${filename}`);
       setFiles(files.filter(file => file.filename !== filename));
     } catch (err) {
       setError('Error deleting file');
@@ -64,10 +64,10 @@ function FileList() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody >
           {files.map((file, index) => (
             <tr key={index}>
-              <td><a href={`http://localhost:8080/uploads/${file.filename}`} target="_blank" rel="noopener noreferrer">{file.filename}</a></td>
+              <td ><a href={`http://localhost:8080/uploads/${file.filename}`} target="_blank" rel="noopener noreferrer">{file.filename}</a></td>
               
               {/* <td>{new Date(file.modifiedTime).toLocaleString()}</td> */}
               <td>{file.description || 'N/A'}</td>

@@ -18,6 +18,7 @@ import UserDashBoard from './controller/Client/User/UserDashBord';
 import FileList from './controller/Admin/content/News/fileLIst';
 
 function App() {
+  const stockTicker = 'IBM';
   return (
     <Router>
       <div>
@@ -33,6 +34,7 @@ function App() {
           <Route path='/role' element={<Role />}/>
           <Route path='/contentlogin' element={<ContentLogin />}/>
           {/* <Route path='/stocknews' element={<StockNews ticker={stockTicker} />} /> */}
+          <Route path='/stocknews' element={<StockNews />} />
           <Route path='/filelist' element={<FileList />}/>
         </Routes>
       </div>
