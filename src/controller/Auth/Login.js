@@ -23,12 +23,14 @@ function Login() {
       const response = await axios.post('http://localhost:8080/auth/login', data);
       setErrorMessage('');
       const token = response.data.access_token;
-      localStorage.setItem('token', token);
+      localStorage.setItem('jwt', response.data.access_token);
 
-      if (data.rolename === 'admin') {
-        navigate('/contentdashbord');
-      } else {
+      if (data.rolename === 'User') {
         navigate('/userdashboard');
+        
+      } else {
+        navigate('/contentdashbord');
+      
       }
 
     } catch (error) {
@@ -44,7 +46,7 @@ function Login() {
   return (
     <div className="container-fluid p-3">
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded">
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{margin:" -58px"}}>
         <h1 className="mb-0">Welcome</h1>
         <div>
           <Button variant="primary" className="me-2">

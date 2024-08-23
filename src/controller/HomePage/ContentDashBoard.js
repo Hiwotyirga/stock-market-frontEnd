@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import '../../App.css';
 import StockNews from '../Client/StockNews';
-// import FilePost from './News/filePost';
-// import VideoPost from './News/videoPost';
+import NewsPost from '../News/newsPost';
 
 function ContentDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,10 +16,10 @@ function ContentDashBoard() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ display: 'flex', height: 'auto' }}>
       <div
         style={{
-          backgroundColor: '#90A4AE', // Sidebar background color
+          backgroundColor: '#90A4AE', 
           width: isOpen ? '200px' : '70px',
           transition: 'width 0.3s',
           overflow: 'hidden',
@@ -33,7 +32,7 @@ function ContentDashBoard() {
           ☰
         </button>
         <nav style={{ width: '100%' }}>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          <ul style={{ listStyle: 'none', padding: 0, marginBottom: "50px", gap:"100px"}}>
             <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
                 <use xlinkHref="#home"></use>
@@ -108,11 +107,11 @@ function ContentDashBoard() {
         </nav>
       </div>
       <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
-        {activeTab === 'Home' && <h1>Home</h1>}
+        {activeTab === 'Home' && <h1><NewsPost /></h1>}
         {activeTab === 'User Admin' && <h1>Hello User Admin</h1>}
         {activeTab === 'Content Admin' && <h1>Hello Content Admin</h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
-        {/* {activeTab === 'File' && <FilePost />} */}
+        {/* {activeTab === 'File' && <h1><NewsPost /></h1>} */}
         {/* {activeTab === 'Planner' && <h1><VideoPost /></h1>} */}
         {activeTab === 'Settings' && <h1>Hello Settings</h1>}
       </div>

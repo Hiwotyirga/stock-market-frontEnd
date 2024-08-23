@@ -32,7 +32,7 @@ function Register() {
   return (
     <div className="container-fluid p-3">
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4">
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4" style={{margin:" -58px"}}>
         <h1 className="mb-0">Register</h1>
         <div>
           <Button variant="primary">

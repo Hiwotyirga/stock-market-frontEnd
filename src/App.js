@@ -8,6 +8,8 @@ import UserDashBoard from './controller/HomePage/UserDashBord';
 // import FileList from './controller/Admin/content/News/fileLIst';
 import StockNews from './controller/Client/StockNews';
 import Register from './controller/Auth/register';
+import NewsPost from './controller/News/newsPost';
+import Logout from './controller/Auth/logout';
 
 function App() {
   const stockTicker = 'IBM';
@@ -17,7 +19,9 @@ function App() {
         <Routes>
           <Route path='/userdashboard' element={<UserDashBoard />}/>
           <Route path='/register' element={<Register />} />
+          <Route path='/newspost' element={<NewsPost />}/>
           <Route path='/userList' element={<UserList />}/>
+          <Route path='/logout' element={<Logout />}/>
           <Route path='/userlogin' element={<Login />}/>
           <Route path='/contentdashbord' element={<ContentDashBoard />}/>
           <Route path='/' element={<HomePage />}/>
