@@ -1,73 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import './ImageList.css'; // Import your CSS file
 
-const StockNews = () => {
-  const [mediaFiles, setMediaFiles] = useState([]);
-  const [loading, setLoading] = useState(true);
+function StockNews() {
+  const [images, setImages] = useState([]);
 
-  // Fetch the media files from the backend
   useEffect(() => {
-    const fetchMediaFiles = async () => {
+    const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/upload/files', {
-          params: { page: 1, limit: 10 }, // Fetch the first 10 files
-        });
-        setMediaFiles(response.data.files); // Set the fetched files
-        setLoading(false);  // Stop loading
+        const response = await fetch('http://localhost:8080/image/upload/file');
+        const data = await response.json();
+        setImages(data);
       } catch (error) {
-        console.error('Error fetching media files:', error);
-        setLoading(false);  // Stop loading on error
+        console.error('Error fetching images:', error);
       }
     };
 
-    fetchMediaFiles();
+    fetchImages();
   }, []);
 
-  if (loading) {
-    return <p>Loading media files...</p>;
-  }
-
   return (
-    <div>
-      {mediaFiles.length > 0 ? (
-        <div>
-          {mediaFiles.map((file) => (
-            <div key={file.filename}>
-              {/* If the file is an image, render an <img> tag */}
-              {file.type === 'image' ? (
-                <div>
-                  <img
-                    src={`http://localhost:8080/uploads/${file.filename}`} // Use the mediaUrl
-                    alt={file.description}
-                    style={{ width: '300px', height: 'auto' }}
-                  />
-                  <p>{file.description}</p>
-                  <p>{file.content}</p>
-                  <p>{file.postTime}</p>
-                </div>
-              ) : (
-                // If the file is a video, render a <video> tag
-                <div>
-                  <video controls style={{ width: '400px', height: 'auto' }}>
-                    <source
-                      src={`http://localhost:8080/uploads/${file.filename}`} // Use the mediaUrl
-                      type="video/mp4"
-                    />
-                    Your browser does not support the video tag.
-                  </video>
-                  <p>{file.description}</p>
-                  <p>{file.content}</p>
-                  <p>{file.postTime}</p>
-                </div>
-              )}
+    <div className="container">
+      <div className="header">
+        <h1>Latest News</h1>
+      </div>
+      <div className="card-container">
+        {images.map((image) => (
+          <div className="card" key={image.id}>
+            <img 
+              src={`http://localhost:8080/image/upload/file/${image.filename}`} 
+              alt={image.describe} 
+              className="card-image" 
+            />
+            <div className="card-content">
+              <h3>{image.filename}</h3>
+              <p>{image.describe}</p>
+              <p>{new Date(image.postTime).toLocaleString()}</p>
             </div>
-          ))}
-        </div>
-      ) : (
-        <p>No media files found</p>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
+}
 
 export default StockNews;

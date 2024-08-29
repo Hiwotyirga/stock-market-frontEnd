@@ -5,42 +5,49 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
-import Logout from '../Auth/logout';
-import './news.css';
+import Logout from '../../Auth/logout';
+// import './news.css';
 
-function NewsPost() {
+function ImagePost() {
   const [file, setFile] = useState("");
-  const [description, setDescription] = useState("");
+  const [describe, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [list, setList]= useState([])
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('description', description);
+    formData.append('describe', describe);
     formData.append('content', content);
-
+  
     try {
-      await axios.post('http://localhost:8080/image/upload', formData, {
+      const response = await axios.post('http://localhost:8080/image/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-      navigate('/userlogin');
+  
+      // Log the response data to the console
+      console.log('Response data:', response.data);
+  
+      // Update the list with the response data if needed
+      setList(prevList => [...prevList, response.data]);
     } catch (error) {
       console.error('There was an error submitting the form!', error);
-      setErrorMessage('Registration failed. Please try again.');
+      setErrorMessage('Submission failed. Please try again.');
     }
   };
+  
 
   return (
     <div className="container-fluid p-3" style={{fontSize:"10px"}}>
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4" style={{margin:" -58px", padding:"-50px"}}>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4" style={{margin:" -28px", padding:"-50px"}}>
         <h1 className="mb-0"  style={{fontSize:"30px" }}>Stock Market</h1>
         <div style={{marginRight:"50px"}}>
           <Logout /> {/* Use the Logout component */}
@@ -66,7 +73,7 @@ function NewsPost() {
               type="text"
               className="form-control"
               id="description"
-              value={description}
+              value={describe}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
@@ -87,4 +94,4 @@ function NewsPost() {
   );
 }
 
-export default NewsPost;
+export default ImagePost;

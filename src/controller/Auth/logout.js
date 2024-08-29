@@ -26,7 +26,7 @@ const Logout = () => {
         }
       );
       localStorage.removeItem('jwt'); // Clear JWT from localStorage
-      navigate('/userlogin'); // Redirect to login page
+      navigate('/stock-admin'); // Redirect to login page
     } catch (error) {
       console.error('Logout failed:', error.response ? error.response.data : error.message);
     }

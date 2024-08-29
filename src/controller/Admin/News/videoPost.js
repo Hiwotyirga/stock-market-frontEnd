@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
-import Logout from '../Auth/logout';
-import './news.css';
+import Logout from '../../Auth/logout';
+// import './news.css';
 
-function NewsPost() {
+function VideoPost() {
   const [file, setFile] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -20,11 +20,11 @@ function NewsPost() {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('description', description);
+    formData.append('description',description);
     formData.append('content', content);
 
     try {
-      await axios.post('http://localhost:8080/image/upload', formData, {
+      await axios.post('http://localhost:8080/video/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -52,7 +52,7 @@ function NewsPost() {
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <div className="form-group mb-3" style={{fontSize:"25px"}}>
-            <label htmlFor="file">Upload file</label>
+            <label htmlFor="file">Upload video</label>
             <input
                 type="file"
                 className="form-control"
@@ -87,4 +87,4 @@ function NewsPost() {
   );
 }
 
-export default NewsPost;
+export default VideoPost;

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import '../../App.css';
 import StockNews from '../Client/StockNews';
 import NewsPost from '../News/newsPost';
+import ImageList from '../Admin/News/imageList';
+import VideoList from '../Admin/News/videoList';
+
 
 function ContentDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
@@ -24,6 +27,7 @@ function ContentDashBoard() {
           transition: 'width 0.3s',
           overflow: 'hidden',
           display: 'flex',
+          height:"auto",
           flexDirection: 'column',
           alignItems: isOpen ? 'flex-start' : 'center',
         }}
@@ -39,7 +43,7 @@ function ContentDashBoard() {
               </svg>
               {isOpen && (
                 <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Home')}>
-                  Home
+                  File
                 </a>
               )}
             </li>
@@ -49,7 +53,7 @@ function ContentDashBoard() {
               </svg>
               {isOpen && (
                 <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('User Admin')}>
-                  User Admin
+                  Video
                 </a>
               )}
             </li>
@@ -107,8 +111,8 @@ function ContentDashBoard() {
         </nav>
       </div>
       <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
-        {activeTab === 'Home' && <h1><NewsPost /></h1>}
-        {activeTab === 'User Admin' && <h1>Hello User Admin</h1>}
+        {activeTab === 'Home' && <h1><ImageList /></h1>}
+        {activeTab === 'User Admin' && <h1><VideoList/></h1>}
         {activeTab === 'Content Admin' && <h1>Hello Content Admin</h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
         {/* {activeTab === 'File' && <h1><NewsPost /></h1>} */}

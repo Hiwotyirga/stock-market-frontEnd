@@ -24,14 +24,7 @@ function Login() {
       setErrorMessage('');
       const token = response.data.access_token;
       localStorage.setItem('jwt', response.data.access_token);
-
-      if (data.rolename === 'User') {
-        navigate('/userdashboard');
-        
-      } else {
-        navigate('/contentdashbord');
-      
-      }
+      navigate('/contentdashbord');
 
     } catch (error) {
       console.error('There was an error submitting the form!', error);
@@ -46,12 +39,12 @@ function Login() {
   return (
     <div className="container-fluid p-3">
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{margin:" -58px"}}>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{margin:" -28px"}}>
         <h1 className="mb-0">Welcome</h1>
         <div>
-          <Button variant="primary" className="me-2">
+          {/* <Button variant="primary" className="me-2">
             <Link to="/userlogin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-          </Button>
+          </Button> */}
           <Button variant="primary">
             <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Signup</Link>
           </Button>

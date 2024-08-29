@@ -1,0 +1,13 @@
+/* styles.css */
+body {
+    padding-top: 56px; /* Adjust based on navbar height */
+  }
+  
+  .navbar-nav .nav-link {
+    color: #333;
+  }
+  
+  .navbar-nav .nav-link.active {
+    color: #007bff;
+  }
+  

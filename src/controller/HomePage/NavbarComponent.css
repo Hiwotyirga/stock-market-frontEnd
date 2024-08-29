@@ -1,0 +1,112 @@
+/* NavbarComponent.css */
+.navbar {
+    background-color: #282c34;
+    padding: 10px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    position: relative; /* Needed for absolute positioning of search bar */
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: -20px;
+  }
+  
+  .search-bar input {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+  }
+  
+  .search-button {
+    background-color: #61dafb;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .search-button:hover {
+    background-color: #4fa3d7;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    list-style: none;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+    flex-grow: 1; 
+    justify-content: center; /* Center the menu items horizontally */
+  }
+  
+  .nav-item {
+    margin: 0 20px;
+  }
+  
+  .nav-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 5px;
+  }
+  
+  .nav-item a::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: #61dafb;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-item.active a::after,
+  .nav-item a:hover::after {
+    width: 100%;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .search-bar {
+      position: static;
+      margin-bottom: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .navbar-nav {
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+  
+    .nav-item {
+      margin: 10px 0;
+    }
+  }
+  
