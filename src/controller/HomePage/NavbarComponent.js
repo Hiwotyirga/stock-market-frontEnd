@@ -3,6 +3,7 @@ import { Link,  useLocation  } from 'react-router-dom';
 import './NavbarComponent.css'; // Import custom CSS
 // import LatestNews from './LatestNews';
 import StockNews from '../Client/StockNews';
+import News from '../pages/News';
 
 const NavbarComponent = () => {
   const location = useLocation();
@@ -38,7 +39,7 @@ const NavbarComponent = () => {
     </nav>
 
     {/* <LatestNews /> */}
-    <StockNews />
+    <News/>
    </div>
   );
 };

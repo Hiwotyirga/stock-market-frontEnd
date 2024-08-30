@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';  // Ensure Bootstrap CSS is imported
 
 function Login() {
@@ -24,14 +25,15 @@ function Login() {
       setErrorMessage('');
       const token = response.data.access_token;
       localStorage.setItem('jwt', response.data.access_token);
+      swal("SUCCESSFULLY LOGIN")
       navigate('/contentdashbord');
 
     } catch (error) {
       console.error('There was an error submitting the form!', error);
       if (error.response && error.response.status === 401) {
-        setErrorMessage('Login failed: Incorrect username or password.');
+        swal("LOGIN FAILED: INCORRECT USERNAME OR PASSWORD.");
       } else {
-        setErrorMessage('An error occurred. Please try again.');
+        swal('An error occurred. Please try again.');
       }
     }
   };

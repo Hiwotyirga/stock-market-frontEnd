@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
-
+import swal from 'sweetalert';
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,12 +24,15 @@ function Register() {
     try {
       const response = await axios.post("http://localhost:8080/register", data);
       setList(response.data);
+      swal("SUCCESSFULLY LOGIN")
       navigate('/stock-admin'); 
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setErrorMessage('Email already exists. Please use a different email.');
+        
+        swal('Email already exists. Please use a different email.');
       } else {
-        setErrorMessage('Registration failed. Please try again.');
+        swal('Registration failed. Please try again.')
+        // setErrorMessage('Registration failed. Please try again.');
       }
     }
   };

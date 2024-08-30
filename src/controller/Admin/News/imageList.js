@@ -4,6 +4,7 @@ import './ImageList.css'; // Import your CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function ImageList() {
   const [images, setImages] = useState([]);
@@ -11,9 +12,9 @@ function ImageList() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('http://localhost:8080/image/upload/file');
+        const response = await fetch('http://localhost:8080/media/files');
         const data = await response.json();
-        setImages(data.map(image => ({ ...image, showFullDescription: false }))); // Add showFullDescription to each image
+        setImages(data.items.map(image => ({ ...image, showFullDescription: false }))); // Extract items and add showFullDescription
       } catch (error) {
         console.error('Error fetching images:', error);
       }
@@ -24,28 +25,28 @@ function ImageList() {
 
   const handleEdit = (id) => {
     console.log('Edit image with id:', id);
-    // Redirect or open edit form here
   };
 
   const handleDelete = async (id) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('No token found, please log in.');
-      return;
-    }
-
     try {
-      await axios.delete(`http://localhost:8080/image/upload/file/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/media/file/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-      console.log(`File with ID ${id} deleted successfully.`);
-      setImages(images.filter(image => image.id !== id)); // Remove the deleted image from the state
+  
+      if (response.status === 200) {
+        swal(`File is deleted successfully.`);
+        setImages(images.filter(image => image.id !== id));
+      } else {
+        swal('Failed to delete file. Please try again.');
+      }
     } catch (error) {
       console.error('Error deleting file:', error);
+      swal('Error deleting file. Please try again.');
     }
   };
+  
 
   const toggleDescription = (index) => {
     setImages(images.map((image, i) =>
@@ -84,11 +85,11 @@ function ImageList() {
                     <td>{image.filename}</td>
                     <td>
                       {image.showFullDescription
-                        ? image.describe
-                        : image.describe.length > 100
-                          ? `${image.describe.substring(0, 100)}...`
-                          : image.describe}
-                      {image.describe.length > 100 && (
+                        ? image.description
+                        : image.description.length > 100
+                          ? `${image.description.substring(0, 100)}...`
+                          : image.description}
+                      {image.description.length > 100 && (
                         <span
                           onClick={() => toggleDescription(index)}
                           style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }}

@@ -1,19 +1,17 @@
-// src/components/NewsPost.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import Logout from '../../Auth/logout';
-// import './news.css';
+import swal from 'sweetalert';
 
 function ImagePost() {
-  const [file, setFile] = useState("");
-  const [describe, setDescription] = useState("");
+  const [file, setFile] = useState(null);
+  const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [list, setList]= useState([])
+  const [list, setList] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,28 +19,32 @@ function ImagePost() {
   
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('describe', describe);
+    formData.append('description', description);
     formData.append('content', content);
   
     try {
-      const response = await axios.post('http://localhost:8080/image/upload', formData, {
+      const response = await axios.post('http://localhost:8080/media/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-  
-      // Log the response data to the console
-      console.log('Response data:', response.data);
-  
-      // Update the list with the response data if needed
+      
+      // Update the list with the response data
       setList(prevList => [...prevList, response.data]);
+
+      swal("Successfully uploaded");
+      navigate("/contentdashbord")
     } catch (error) {
       console.error('There was an error submitting the form!', error);
-      setErrorMessage('Submission failed. Please try again.');
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.message || 'Submission failed. Please try again.');
+      } else {
+        setErrorMessage('Submission failed. Please try again.');
+      }
+      swal('Submission failed. Please try again.');
     }
   };
-  
 
   return (
     <div className="container-fluid p-3" style={{fontSize:"10px"}}>
@@ -61,10 +63,10 @@ function ImagePost() {
           <div className="form-group mb-3" style={{fontSize:"25px"}}>
             <label htmlFor="file">Upload file</label>
             <input
-                type="file"
-                className="form-control"
-                id="file"
-                onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+              className="form-control"
+              id="file"
+              onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
           <div className="form-group mb-3" style={{fontSize:"25px"}}>
@@ -73,7 +75,7 @@ function ImagePost() {
               type="text"
               className="form-control"
               id="description"
-              value={describe}
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
