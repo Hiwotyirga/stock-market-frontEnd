@@ -45,7 +45,7 @@ function Register() {
         <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>Register</h2>
         <div>
           <Button variant="primary">
-            <Link to="/userlogin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
+            <Link to="/stock-admin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
           </Button>
         </div>
       </header>

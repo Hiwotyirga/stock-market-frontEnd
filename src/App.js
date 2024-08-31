@@ -16,6 +16,7 @@ import WatchList from './controller/pages/watchlist';
 import Trading from './controller/pages/trading';
 import LatestNews from './controller/pages/latestnews';
 import FileDetail from './controller/Admin/News/FileDetail';
+import StockChart from './controller/stock/StockChart';
 
 function App() {
   const stockTicker = 'IBM';
@@ -37,6 +38,7 @@ function App() {
           <Route path='/imageList' element={<ImageList />}/>
           <Route path='/stocks/overview' element={<Stocks />}/>
           <Route path='/analysis' element={<Analysis />}/>
+          <Route path='/stockchart' element={<StockChart symbol="AAPL" />}/>
           <Route path='/watchlist' element={<WatchList />}/>
           <Route path='/trading' element={<Trading />}/>
         </Routes>

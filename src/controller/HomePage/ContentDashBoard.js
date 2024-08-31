@@ -3,6 +3,7 @@ import '../../App.css';
 import StockNews from '../Client/StockNews';
 import NewsPost from '../News/newsPost';
 import ImageList from '../Admin/News/imageList';
+import DashBoard from './Dashbord';
 
 
 
@@ -43,8 +44,9 @@ function ContentDashBoard() {
               </svg>
               {isOpen && (
                 <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Home')}>
-                  Media
+                  DashBoard
                 </a>
+
               )}
             </li>
             <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
@@ -53,7 +55,7 @@ function ContentDashBoard() {
               </svg>
               {isOpen && (
                 <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('User Admin')}>
-                  Home
+                  Media
                 </a>
               )}
             </li>
@@ -111,8 +113,8 @@ function ContentDashBoard() {
         </nav>
       </div>
       <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
-        {activeTab === 'Home' && <h1><ImageList /></h1>}
-        {activeTab === 'User Admin' && <h1></h1>}
+        {activeTab === 'Home' && <h1><DashBoard /></h1>}
+        {activeTab === 'User Admin' && <h1><ImageList /></h1>}
         {activeTab === 'Content Admin' && <h1>Hello Content Admin</h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
         {/* {activeTab === 'File' && <h1><NewsPost /></h1>} */}

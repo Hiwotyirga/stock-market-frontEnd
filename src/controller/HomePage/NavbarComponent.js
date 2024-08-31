@@ -37,8 +37,6 @@ const NavbarComponent = () => {
           </ul>
       </div>
     </nav>
-
-    {/* <LatestNews /> */}
     <News/>
    </div>
   );

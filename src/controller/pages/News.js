@@ -12,7 +12,8 @@ const News = () => {
     const fetchFiles = async () => {
       try {
         const response = await axios.get('http://localhost:8080/media/files');
-        setFiles(response.data.items || []);
+        const sortedFiles = response.data.items.sort((a, b) => new Date(b.postTime) - new Date(a.postTime));
+        setFiles(sortedFiles);
       } catch (error) {
         console.error('Error fetching files:', error);
       }
@@ -31,10 +32,6 @@ const News = () => {
     setSelectedMedia(null);
   };
 
-  const handleNavigation = (id) => {
-    navigate(`/file/${id}`);
-  };
-
   const toggleDescription = (index) => {
     setFiles(files.map((file, i) =>
       i === index ? { ...file, showFullDescription: !file.showFullDescription } : file
@@ -49,50 +46,115 @@ const News = () => {
   };
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f4f4f4', minHeight: '100vh' }}>
+    <div style={{ 
+      padding: '20px', 
+      backgroundColor: '#f4f4f4', 
+      minHeight: '100vh', 
+      overflowY: 'auto', // Enable vertical scrolling
+      maxHeight: 'calc(100vh - 40px)' // Adjust based on header/footer height
+    }}>
       <h2 style={{ color: '#333', textAlign: 'center', marginBottom: '20px' }}>Latest News</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: "30px" }}>
+      <div style={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        gap: '20px', 
+        justifyContent: 'center' // Center the cards horizontally
+      }}>
         {files.map((file, index) => (
-          <div key={file.id} style={{ margin: '15px', display: 'flex', alignItems: 'flex-start', cursor: 'pointer' }}>
-            <div style={{ width: "670px", height: "370px" }}>
+          <div key={file.id} style={{ 
+            width: '400px', 
+            height: '400px', 
+            margin: '15px', 
+            color: '#666', 
+            backgroundColor:"#666",
+            borderRadius: '10px', 
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+            overflow: 'hidden', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            position: 'relative' // Ensure post time can be positioned absolutely
+          }}>
+            <div style={{ 
+              backgroundColor: 'yellow', 
+              padding: '10px', 
+              fontSize: '18px', 
+              color: '#333', 
+              textAlign: 'center' 
+            }}>
+              {file.content || 'No title'}
+            </div>
+            <div style={{ 
+              flex: 1, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              overflow: 'hidden' 
+            }}>
               {file.mimetype.startsWith('image/') && (
                 <img
                   src={`http://localhost:8080/media/${file.filename}`}
                   alt={file.filename || 'Placeholder'}
-                  style={{ width: '650px', height: '350px', objectFit: 'cover', marginRight: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', transition: 'transform 0.3s' }}
+                  style={{ 
+                    maxWidth: '100%', 
+                    maxHeight: '100%', 
+                    objectFit: 'cover' 
+                  }}
                   onClick={() => handleMediaClick(file.filename, file.mimetype)}
                 />
               )}
               {file.mimetype.startsWith('video/') && (
                 <video
                   src={`http://localhost:8080/media/${file.filename}`}
-                  style={{ width: '650px', height: '350px', objectFit: 'cover', marginRight: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', transition: 'transform 0.3s' }}
+                  style={{ 
+                    maxWidth: '100%', 
+                    maxHeight: '100%', 
+                    objectFit: 'cover' 
+                  }}
                   onClick={() => handleMediaClick(file.filename, file.mimetype)}
                   controls
                 />
               )}
             </div>
-            <div>
-              <h3 style={{ margin: '0 0 10px 0', fontSize: '30px', color: 'blue' }}>
-                {file.content || 'No title'}
-              </h3>
-              <p style={{ fontSize: '18px', color: '#666', margin: '0 0 10px 0', width: "500px" }}>
+            <div style={{ 
+              padding: '10px', 
+              fontSize: '14px', 
+             
+              color:"white",
+              textAlign: 'center' 
+            }}>
+              <p>
                 {file.description
                   ? (file.showFullDescription
                       ? file.description
-                      : file.description.length > 310
-                        ? truncateText(file.description, 310)
+                      : file.description.length > 100
+                        ? truncateText(file.description, 100)
                         : file.description)
                   : 'No description available'}
                 {file.description && file.description.length > 100 && (
                   <span
                     onClick={() => toggleDescription(index)}
-                    style={{ color: 'blue', cursor: 'pointer', marginLeft: '5px', textDecoration: 'underline' }}
+                    style={{ 
+                      color: 'blue', 
+                      cursor: 'pointer', 
+                     
+                      marginLeft: '5px', 
+                      textDecoration: 'underline' 
+                    }}
                   >
                     {file.showFullDescription ? ' Show less' : ' Read more'}
                   </span>
                 )}
               </p>
+            </div>
+            <div style={{ 
+              position: 'absolute', 
+              bottom: '10px', 
+              left: '10px', 
+              fontSize: '12px', 
+              color: 'blue' 
+              
+            }}>
+              {new Date(file.postTime).toLocaleDateString()}
             </div>
           </div>
         ))}
@@ -120,13 +182,25 @@ const News = () => {
             <img
               src={`http://localhost:8080/media/${selectedMedia.filename}`}
               alt="Full Screen"
-              style={{ maxWidth: '160%', maxHeight: '100%', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}
+              style={{ 
+                maxWidth: '160%', 
+                maxHeight: '100%', 
+                objectFit: 'contain', 
+                borderRadius: '10px', 
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' 
+              }}
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the image
             />
           ) : selectedMedia.mimetype.startsWith('video/') ? (
             <video
               src={`http://localhost:8080/media/${selectedMedia.filename}`}
-              style={{ maxWidth: '160%', maxHeight: '100%', objectFit: 'contain', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' }}
+              style={{ 
+                maxWidth: '160%', 
+                maxHeight: '100%', 
+                objectFit: 'contain', 
+                borderRadius: '10px', 
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)' 
+              }}
               controls
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the video
             />
