@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import StocksList from './stockList/stocklist'
+import StockMarketList from './StockMarketList'
 
 function Stocks
 () {
@@ -33,9 +35,9 @@ function Stocks
     </div>
   </nav>
 
-  {/* <LatestNews /> */}
-  {/* <StockNews /> */}
-  stocks
+  <StockMarketList />
+  <StocksList />
+ 
  </div>
     // </div>
   )

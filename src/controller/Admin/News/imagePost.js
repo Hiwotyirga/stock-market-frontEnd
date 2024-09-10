@@ -34,7 +34,7 @@ function ImagePost() {
       setList(prevList => [...prevList, response.data]);
 
       swal("Successfully uploaded");
-      navigate("/contentdashbord")
+      navigate("/contentdashbord#")
     } catch (error) {
       console.error('There was an error submitting the form!', error);
       if (error.response && error.response.data) {

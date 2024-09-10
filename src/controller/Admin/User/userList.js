@@ -1,18 +1,46 @@
+// import axios from 'axios'
+// import React, { useEffect, useState } from 'react'
+
+// function UserList() {
+//   const [userList,setUserList]=useState([])
+
+//   useEffect(()=>{
+
+//     axios.get("http://localhost:9000").then((response)=>{
+//     setUserList(response.data)
+    
+//     }) 
+//     })
+//   return (
+//     <div>{userList.map((value,key)=>{
+//       return(
+//         <div> 
+//           <div> <div> {value.name}</div>
+//              <div> {value.email}</div>
+//           <div> {value.password}</div></div>
+//           </div>
+        
+//       )
+//     })}</div>
+//   )
+// }
+
+// export default UserList;
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './ImageList.css'; // Import your CSS file
+import './userlist.css'; // Import your CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import swal from 'sweetalert';
 
-function ImageList() {
+function UserList() {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('http://localhost:8080/media/files');
+        const response = await fetch('http://localhost:8080/user');
         const data = await response.json();
         setImages(data.items.map(image => ({ ...image, showFullDescription: false }))); // Extract items and add showFullDescription
       } catch (error) {
@@ -59,46 +87,34 @@ function ImageList() {
       <main className="main-content">
         <div className="header">
           <button className="btn-primary">
-            <Link to='/uploadFile' style={{ color: 'white' }}>Add file</Link>
+            <Link to='/adduser' style={{ color: 'white' }}>Add User</Link>
           </button>
         </div>
         <div className="table-container">
           <table className="table">
             <thead>
               <tr>
-                <th>Number</th>
-                <th>Filename</th>
-                <th>Description</th>
-                <th>Post Time</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                {/* <th>Post Time</th> */}
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {images.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center' }}>No images available</td>
+                  <td colSpan="5" style={{ textAlign: 'center' }}>No user available</td>
                 </tr>
               ) : (
                 images.map((image, index) => (
                   <tr key={image.id}>
                     <td>{image.id}</td>
-                    <td>{image.filename}</td>
+                    <td>{image.name}</td>
                     <td>
-                      {image.showFullDescription
-                        ? image.description
-                        : image.description.length > 100
-                          ? `${image.description.substring(0, 100)}...`
-                          : image.description}
-                      {image.description.length > 100 && (
-                        <span
-                          onClick={() => toggleDescription(index)}
-                          style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }}
-                        >
-                          {image.showFullDescription ? 'Read less' : 'Read more'}
-                        </span>
-                      )}
+                        {image.email}
                     </td>
-                    <td>{new Date(image.postTime).toLocaleString()}</td>
+                    <td>{image.role}</td>
                     <td>
                       <span
                         className="action-icon"
@@ -128,4 +144,4 @@ function ImageList() {
   );
 }
 
-export default ImageList;
+export default UserList;

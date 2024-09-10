@@ -4,6 +4,7 @@ import StockNews from '../Client/StockNews';
 import NewsPost from '../News/newsPost';
 import ImageList from '../Admin/News/imageList';
 import DashBoard from './Dashbord';
+import UserList from '../Admin/User/userList';
 
 
 
@@ -65,7 +66,7 @@ function ContentDashBoard() {
               </svg>
               {isOpen && (
                 <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Content Admin')}>
-                  Content Admin
+                  User
                 </a>
               )}
             </li>
@@ -115,7 +116,7 @@ function ContentDashBoard() {
       <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
         {activeTab === 'Home' && <h1><DashBoard /></h1>}
         {activeTab === 'User Admin' && <h1><ImageList /></h1>}
-        {activeTab === 'Content Admin' && <h1>Hello Content Admin</h1>}
+        {activeTab === 'Content Admin' && <h1><UserList /></h1>}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
         {/* {activeTab === 'File' && <h1><NewsPost /></h1>} */}
         {/* {activeTab === 'Planner' && <h1><VideoPost /></h1>} */}
