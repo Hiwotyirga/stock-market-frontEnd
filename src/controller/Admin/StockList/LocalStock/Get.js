@@ -5,20 +5,29 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap';
+import './get.css'; // Ensure to import the CSS file
 
 const LocalStockList = () => {
   const [stockData, setStockData] = useState({
-    top_gainers: [],
-    top_losers: [],
-    most_actively_traded: []
+    topGainers: [],
+    topLosers: [],
+    mostActivelyTraded: []
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/local-stock/stock/list');
-        setStockData(response.data);
+        const response = await axios.get('http://localhost:8080/local-market/stocks');
+        console.log('API Response:', response.data);
+
+        const latestData = response.data[response.data.length - 1];
+
+        setStockData({
+          topGainers: latestData.topGainers || [],
+          topLosers: latestData.topLosers || [],
+          mostActivelyTraded: latestData.mostActivelyTraded || []
+        });
         setLoading(false);
       } catch (error) {
         console.error('Error fetching stock data:', error);
@@ -36,9 +45,9 @@ const LocalStockList = () => {
         alert('Stock deleted successfully.');
         setStockData((prevData) => ({
           ...prevData,
-          top_gainers: prevData.top_gainers.filter(stock => stock.ticker !== ticker),
-          top_losers: prevData.top_losers.filter(stock => stock.ticker !== ticker),
-          most_actively_traded: prevData.most_actively_traded.filter(stock => stock.ticker !== ticker)
+          topGainers: prevData.topGainers.filter(stock => stock.ticker !== ticker),
+          topLosers: prevData.topLosers.filter(stock => stock.ticker !== ticker),
+          mostActivelyTraded: prevData.mostActivelyTraded.filter(stock => stock.ticker !== ticker)
         }));
       }
     } catch (error) {
@@ -48,16 +57,11 @@ const LocalStockList = () => {
   };
 
   const handleEdit = (ticker) => {
-    // Add your edit logic here (e.g., open an edit form or navigate to an edit page)
     alert(`Edit functionality for ${ticker} is yet to be implemented.`);
   };
 
   if (loading) {
     return <div className="loading">Loading...</div>;
-  }
-
-  if (!stockData || !Array.isArray(stockData.top_gainers) || !Array.isArray(stockData.top_losers) || !Array.isArray(stockData.most_actively_traded)) {
-    return <div className="no-data">No data available</div>;
   }
 
   const renderColumn = (title, items, isLoser = false) => (
@@ -83,8 +87,8 @@ const LocalStockList = () => {
                   <tr key={item.ticker}>
                     <td>{item.ticker}</td>
                     <td>${isNaN(price) ? 'N/A' : price.toFixed(2)}</td>
-                    <td>{item.change_amount || item.changeAmount}</td>
-                    <td>{item.change_percentage || item.changePercentage}%</td>
+                    <td>{item.changeAmount}</td>
+                    <td>{item.changePercentage}%</td>
                     <td>{item.volume}</td>
                     <td>
                       <span style={{ marginRight: "10px", cursor: "pointer" }} onClick={() => handleEdit(item.ticker)}>
@@ -122,9 +126,9 @@ const LocalStockList = () => {
         </Dropdown>
       </div>
       <div className="container">
-        {renderColumn('Top Gainers', stockData.top_gainers)} {/* Green button */}
-        {renderColumn('Top Losers', stockData.top_losers, true)} {/* Red button */}
-        {renderColumn('Most Actively Traded Stocks', stockData.most_actively_traded)}
+        {renderColumn('Top Gainers', stockData.topGainers)}
+        {renderColumn('Top Losers', stockData.topLosers, true)}
+        {renderColumn('Most Actively Traded Stocks', stockData.mostActivelyTraded)}
       </div>
     </div>
   );

@@ -4,11 +4,9 @@ import swal from 'sweetalert';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, LineMarkSeries, VerticalBarSeries } from 'react-vis';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 import 'react-vis/dist/style.css'; // Import react-vis styles
-// Remove the incorrect import for recharts styles
-// import 'recharts/lib/index.css';
 
 const data = {
-  sales : [
+  sales: [
     { x: "January", y: 21 },
     { x: "February", y: 35 },
     { x: "March", y: 75 },
@@ -16,7 +14,7 @@ const data = {
     { x: "May", y: 41 },
     { x: "June", y: 47 }
   ],
-  leads : [
+  leads: [
     { x: "January", y: 41 },
     { x: "February", y: 79 },
     { x: "March", y: 57 },
@@ -28,7 +26,7 @@ const data = {
     { name: 'Group A', value: 400 },
     { name: 'Group B', value: 300 },
     { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
+    { name: 'Group D', value: 200 }
   ]
 };
 
@@ -38,11 +36,9 @@ function Dashboard() {
   const [images, setImages] = useState([]);
   const [comment, setComment] = useState(0);
   const [like, setLike] = useState(0);
-  const [dislike, setDislike] = useState(0);
+  const [localStock, setLocalStock] = useState(0);
   const [mediaCount, setMediaCount] = useState(0);
-  // const [error, setError] = useState<string | null>(null);
-  const [userCount, setUserCount] = useState(0)
-
+  const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -50,6 +46,48 @@ function Dashboard() {
     };
 
     fetchImages();
+  }, []);
+
+  useEffect(() => {
+    const fetchMediaCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/media/count');
+        setMediaCount(response.data.count);
+      } catch (err) {
+        swal('Failed to fetch media count');
+        console.error(err);
+      }
+    };
+
+    fetchMediaCount();
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchLocalStockCount = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:8080/localstock/count');
+  //       setLocalStock(response.data.count);
+  //     } catch (err) {
+  //       // swal('Failed to fetch local stock count');
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   fetchLocalStockCount();
+  // }, []);
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/register/count');
+        setUserCount(response.data.count);
+      } catch (err) {
+        swal('Failed to fetch user count');
+        console.error(err);
+      }
+    };
+
+    fetchUserCount();
   }, []);
 
   const handleLike = (id) => {
@@ -75,35 +113,6 @@ function Dashboard() {
       swal('Error deleting file. Please try again.');
     }
   };
-  useEffect(() => {
-    const fetchMediaCount = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/media/count');
-        setMediaCount(response.data.count);
-      } catch (err) {
-        swal('Failed to fetch media count');
-        console.error(err);
-      }
-    };
-
-    fetchMediaCount();
-  }, []);
-  useEffect(() => {
-    const fetchUserCount = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/register/count');
-        setUserCount(response.data.count);
-      } catch (err) {
-        swal('Failed to fetch User count');
-        console.error(err);
-      }
-    };
-
-    fetchUserCount();
-  }, []);
-
-
- 
 
   return (
     <div>
@@ -113,24 +122,21 @@ function Dashboard() {
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body" style={{ gap: "10px" }}>
-                  <h5 className="card-title">User {userCount}</h5>
-                  {/* {handleDislike} */}
+                  <h5 className="card-title">User : {userCount}</h5>
                 </div>
               </div>
             </div>
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">media {mediaCount}</h5>
-                  {/* {handleComment} */}
+                  <h5 className="card-title">Media : {mediaCount}</h5>
                 </div>
               </div>
             </div>
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Like {like}</h5>
-                  {handleLike}
+                  <h5 className="card-title">Local Stock : {localStock}</h5>
                 </div>
               </div>
             </div>

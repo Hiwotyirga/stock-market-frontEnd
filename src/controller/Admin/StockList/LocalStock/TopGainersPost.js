@@ -16,12 +16,12 @@ function TopGainersPost() {
 
     const stockData = {
       top_gainers: [gainers],
-      top_losers: [losers],
-      most_actively_traded: [actives],
+      // top_losers: [losers],
+      // most_actively_traded: [actives],
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/local-stock/post', stockData);
+      const response = await axios.post('http://localhost:8080/local-market/stocks', stockData);
       swal('Stock Data Submitted Successfully!');
       navigate('/contentdashbord');
     } catch (error) {
