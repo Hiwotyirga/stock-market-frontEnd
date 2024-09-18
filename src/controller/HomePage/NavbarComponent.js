@@ -25,9 +25,9 @@ const NavbarComponent = () => {
             <li className={`nav-item ${location.pathname === '/watchlist' ? 'active' : ''}`}>
               <Link to="/watchlist">Watchlist</Link>
             </li>
-            <li className={`nav-item ${location.pathname === '/analysis' ? 'active' : ''}`}>
+            {/* <li className={`nav-item ${location.pathname === '/analysis' ? 'active' : ''}`}>
               <Link to="/analysis">Analysis</Link>
-            </li>
+            </li> */}
             <li className={`nav-item ${location.pathname === '/trading' ? 'active' : ''}`}>
               <Link to="/trading">Trading</Link>
             </li>

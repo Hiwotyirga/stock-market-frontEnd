@@ -1,65 +1,72 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import swal from 'sweetalert';
-function RegisterUser() {
+
+function UserEdit() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setrole] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const [list, setList] =useState([])
-  const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(null);
+  const { id } = useParams(); // Get the user ID from the URL
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const data = {
-      name,
-      email,
-      password,
-      role,
+  // Fetch user data on mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/register/${id}`);
+        const user = response.data;
+        setName(user.name);
+        setEmail(user.email);
+        setRole(user.role);
+        // Password is typically not pre-filled for security reasons
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        swal('Failed to fetch user data. Please try again later.');
+      }
     };
-   
+
+    fetchUserData();
+  }, [id]);
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+
+    // Input validation
+    if (!name || !email || !role) {
+      setErrorMessage('Name, email, and role are required.');
+      return;
+    }
+
+    const data = { name, email, password, role };
+
     try {
-      const response = await axios.post("http://localhost:8080/register", data);
-      setList(response.data);
-      swal("SUCCESSFULLY LOGIN")
-      navigate('/contentdashbord'); 
+      const response = await axios.put(`http://localhost:8080/register/${id}`, data);
+      swal("Successfully updated");
+      navigate('/contentdashbord');
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        
         swal('Email already exists. Please use a different email.');
       } else {
-        swal('Registration failed. Please try again.')
-        // setErrorMessage('Registration failed. Please try again.');
+        swal('Update failed. Please try again.');
       }
     }
   };
 
-  
-  
-
   return (
     <div className="container-fluid p-3">
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-2 rounded mb-3" style={{ marginTop: "10px", height: "60px", margin:" -28px" }}>
-        {/* <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>Register</h2>
-        <div>
-          <Button variant="primary">
-            <Link to="/stock-admin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-          </Button>
-        </div> */}
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-2 rounded mb-3">
+        {/* Optionally, add a header title or navigation buttons */}
       </header>
 
       {/* Registration form */}
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-        <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow" style={{ width: '300px', height: 'auto' }}>
+        <form onSubmit={handleEdit} className="border p-4 bg-light rounded shadow" style={{ width: '300px', height: 'auto' }}>
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <div className="form-group mb-3">
             <label htmlFor="name">Name</label>
@@ -84,7 +91,7 @@ function RegisterUser() {
             />
           </div>
           <div className="form-group mb-3">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Password (leave blank if unchanged)</label>
             <input
               type="password"
               className="form-control"
@@ -100,20 +107,19 @@ function RegisterUser() {
               className="form-control"
               id="role"
               value={role}
-              onChange={(e) => setrole(e.target.value)}
+              onChange={(e) => setRole(e.target.value)}
             >
               <option value="">Select role</option>
-              <option value="Admin">Admin</option>
-              <option value="Content-Admin">Content</option>
-
+              <option value="admin">Admin</option>
+              <option value="user">Content</option>
+              {/* Add more roles as needed */}
             </select>
           </div>
-          <button type="submit" className="btn btn-primary w-100">Register</button>
+          <button type="submit" className="btn btn-primary w-100">Update</button>
         </form>
       </div>
-      
     </div>
   );
 }
 
-export default RegisterUser;
+export default UserEdit;

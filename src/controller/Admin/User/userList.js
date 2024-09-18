@@ -1,85 +1,52 @@
-// import axios from 'axios'
-// import React, { useEffect, useState } from 'react'
-
-// function UserList() {
-//   const [userList,setUserList]=useState([])
-
-//   useEffect(()=>{
-
-//     axios.get("http://localhost:9000").then((response)=>{
-//     setUserList(response.data)
-    
-//     }) 
-//     })
-//   return (
-//     <div>{userList.map((value,key)=>{
-//       return(
-//         <div> 
-//           <div> <div> {value.name}</div>
-//              <div> {value.email}</div>
-//           <div> {value.password}</div></div>
-//           </div>
-        
-//       )
-//     })}</div>
-//   )
-// }
-
-// export default UserList;
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './userlist.css'; // Import your CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import swal from 'sweetalert';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UserList() {
-  const [images, setImages] = useState([]);
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/user');
+        const response = await fetch('http://localhost:8080/register/user/list/');
         const data = await response.json();
-        setImages(data.items.map(image => ({ ...image, showFullDescription: false }))); // Extract items and add showFullDescription
+        setUsers(data); // Set users directly as data
       } catch (error) {
-        console.error('Error fetching images:', error);
+        console.error('Error fetching users:', error);
       }
     };
 
-    fetchImages();
+    fetchUsers();
   }, []);
 
   const handleEdit = (id) => {
-    console.log('Edit image with id:', id);
+    navigate(`/edituser/${id}`); // Navigate to EditUser page
   };
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/media/file/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/register/remove/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-  
+
       if (response.status === 200) {
-        swal(`File is deleted successfully.`);
-        setImages(images.filter(image => image.id !== id));
+        swal('User deleted successfully.');
+        setUsers(users.filter(user => user.id !== id));
       } else {
-        swal('Failed to delete file. Please try again.');
+        swal('Failed to delete user. Please try again.');
       }
     } catch (error) {
-      console.error('Error deleting file:', error);
-      swal('Error deleting file. Please try again.');
+      console.error('Error deleting user:', error);
+      swal('Error deleting user. Please try again.');
     }
-  };
-  
-
-  const toggleDescription = (index) => {
-    setImages(images.map((image, i) =>
-      i === index ? { ...image, showFullDescription: !image.showFullDescription } : image
-    ));
   };
 
   return (
@@ -97,36 +64,32 @@ function UserList() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
-                {/* <th>Post Time</th> */}
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {images.length === 0 ? (
+              {users.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center' }}>No user available</td>
+                  <td colSpan="4" style={{ textAlign: 'center' }}>No users available</td>
                 </tr>
               ) : (
-                images.map((image, index) => (
-                  <tr key={image.id}>
-                    <td>{image.id}</td>
-                    <td>{image.name}</td>
-                    <td>
-                        {image.email}
-                    </td>
-                    <td>{image.role}</td>
+                users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
                     <td>
                       <span
-                        className="action-icon"
-                        onClick={() => handleEdit(image.id)}
-                        title="Edit"
+                        // className="action-icon"
+                        // onClick={() => handleEdit(user.id)}
+                        // title="Edit"
                         style={{ marginRight: "20px", cursor: "pointer" }}
                       >
-                        <FontAwesomeIcon icon={faEdit} />
+                       <Link to='/edituser'>  <FontAwesomeIcon icon={faEdit} /></Link>
                       </span>
                       <span
                         className="action-icon"
-                        onClick={() => handleDelete(image.id)}
+                        onClick={() => handleDelete(user.id)}
                         title="Delete"
                         style={{ cursor: "pointer" }}
                       >

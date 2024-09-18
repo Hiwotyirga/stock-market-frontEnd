@@ -66,7 +66,7 @@ function ImageList() {
           <table className="table">
             <thead>
               <tr>
-                <th>Number</th>
+                {/* <th>Number</th> */}
                 <th>Filename</th>
                 <th>Description</th>
                 <th>Post Time</th>
@@ -81,7 +81,7 @@ function ImageList() {
               ) : (
                 images.map((image, index) => (
                   <tr key={image.id}>
-                    <td>{image.id}</td>
+                    {/* <td>{image.id}</td> */}
                     <td>{image.filename}</td>
                     <td>
                       {image.showFullDescription

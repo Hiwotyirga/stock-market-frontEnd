@@ -1,78 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './StockMarket.css'; // Import the CSS file for styling
+import './StockMarket.css'; // Import CSS file for styling
 
 const StockMarketList = () => {
-  const [data, setData] = useState({ topGainers: [], topLosers: [], mostActivelyTraded: [] });
-  const apiUrl = 'http://localhost:8080/stock-market/stock/list';
+  const [stockData, setStockData] = useState({
+    top_gainers: [],
+    top_losers: [],
+    most_actively_traded: []
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStockData = async () => {
       try {
-        // Fetch data from the local API
-        const response = await axios.get(apiUrl);
-        const result = response.data;
-
-        // Set state with the correct data structure
-        setData({
-          topGainers: result.top_gainers || [],
-          topLosers: result.top_losers || [],
-          mostActivelyTraded: result.most_actively_traded || []
-        });
+        const response = await axios.get('http://localhost:8080/stock-market/stock/list');
+        setStockData(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching stock market data:', error);
+        console.error('Error fetching stock data:', error);
+        setLoading(false);
       }
     };
-    fetchData();
-  }, [apiUrl]);
+
+    fetchStockData();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (!stockData || !Array.isArray(stockData.top_gainers) || !Array.isArray(stockData.top_losers) || !Array.isArray(stockData.most_actively_traded)) {
+    return <div className="no-data">No data available</div>;
+  }
 
   const handleBuyClick = (ticker) => {
-    alert(`Buying ${ticker}`);
+    alert(`You clicked buy for ${ticker}. Implement the buying functionality as needed.`);
   };
 
   const renderColumn = (title, items, isLoser = false) => (
-    <div className="column">
-      <h3>{title}</h3>
+    <div className={`column ${isLoser ? 'loser' : 'gainer'}`}>
+      <h3 className="column-title">{title}</h3>
       {items.length > 0 ? (
-        <>
-          {/* Add headers for each value */}
-          <div className="headers"style={{gap:"5px"}}>
-            <span className="header ticker"style={{gap:"5px"}}>Ticker</span>
+        <div className="table-container">
+          <div className="headers">
+            <span className="header ticker">Ticker</span>
             <span className="header price">Price</span>
             <span className="header change-amount">Change</span>
             <span className="header change-percentage">Change %</span>
             <span className="header volume">Volume</span>
             <span className="header action">Action</span>
           </div>
-
-          {/* Render each item with its corresponding labels */}
-          {items.map((item) => (
-            <div className="item" key={item.ticker}>
-              <span className="ticker">{item.ticker}</span>
-              <span className="price">${item.price}</span>
-              <span className="change-amount">${item.change_amount}</span>
-              <span className="change-percentage">{item.change_percentage}</span>
-              <span className="volume">{item.volume}</span>
-              <button
-                onClick={() => handleBuyClick(item.ticker)}
-                className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`} // Conditionally apply classes
-              >
-                Buy
-              </button>
-            </div>
-          ))}
-        </>
+          {items.map((item) => {
+            const price = parseFloat(item.price);
+            return (
+              <div className="item" key={item.ticker}>
+                <span className="ticker">{item.ticker}</span>
+                <span className="price">${isNaN(price) ? 'N/A' : price.toFixed(2)}</span>
+                <span className="change-amount">${item.change_amount || item.changeAmount}</span>
+                <span className="change-percentage">{item.change_percentage || item.changePercentage}%</span>
+                <span className="volume">{item.volume}</span>
+                <button
+                  onClick={() => handleBuyClick(item.ticker)}
+                  className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}
+                >
+                  Buy
+                </button>
+              </div>
+            );
+          })}
+        </div>
       ) : (
-        <p>No data available</p>
+        <p className="no-data">No data available</p>
       )}
     </div>
   );
 
   return (
     <div className="container">
-      {renderColumn('Top Gainers', data.topGainers)} {/* Green button */}
-      {renderColumn('Top Losers', data.topLosers, true)} {/* Red button */}
-      {renderColumn('Most Actively Traded Stocks', data.mostActivelyTraded)}
+      {renderColumn('Top Gainers', stockData.top_gainers)} {/* Green button */}
+      {renderColumn('Top Losers', stockData.top_losers, true)} {/* Red button */}
+      {renderColumn('Most Actively Traded Stocks', stockData.most_actively_traded)}
     </div>
   );
 };

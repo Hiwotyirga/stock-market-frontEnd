@@ -47,9 +47,9 @@ function Login() {
           {/* <Button variant="primary" className="me-2">
             <Link to="/userlogin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
           </Button> */}
-          <Button variant="primary">
+          {/* <Button variant="primary">
             <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Signup</Link>
-          </Button>
+          </Button> */}
         </div>
       </header>
 

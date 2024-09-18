@@ -39,6 +39,10 @@ function Dashboard() {
   const [comment, setComment] = useState(0);
   const [like, setLike] = useState(0);
   const [dislike, setDislike] = useState(0);
+  const [mediaCount, setMediaCount] = useState(0);
+  // const [error, setError] = useState<string | null>(null);
+  const [userCount, setUserCount] = useState(0)
+
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -71,12 +75,35 @@ function Dashboard() {
       swal('Error deleting file. Please try again.');
     }
   };
+  useEffect(() => {
+    const fetchMediaCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/media/count');
+        setMediaCount(response.data.count);
+      } catch (err) {
+        swal('Failed to fetch media count');
+        console.error(err);
+      }
+    };
 
-  const handleDislike = (index) => {
-    setImages(images.map((image, i) =>
-      i === index ? { ...image, showFullDescription: !image.showFullDescription } : image
-    ));
-  };
+    fetchMediaCount();
+  }, []);
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/register/count');
+        setUserCount(response.data.count);
+      } catch (err) {
+        swal('Failed to fetch User count');
+        console.error(err);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
+
+
+ 
 
   return (
     <div>
@@ -86,16 +113,16 @@ function Dashboard() {
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body" style={{ gap: "10px" }}>
-                  <h5 className="card-title">User {dislike}</h5>
-                  {handleDislike}
+                  <h5 className="card-title">User {userCount}</h5>
+                  {/* {handleDislike} */}
                 </div>
               </div>
             </div>
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Comment {comment}</h5>
-                  {handleComment}
+                  <h5 className="card-title">media {mediaCount}</h5>
+                  {/* {handleComment} */}
                 </div>
               </div>
             </div>

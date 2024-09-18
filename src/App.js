@@ -19,8 +19,10 @@ import LatestNews from './controller/pages/latestnews';
 import FileDetail from './controller/Admin/News/FileDetail';
 // import StockChart from './controller/stock/StockChart';
 import MediaDetail from './controller/pages/MediaDetail';
-import StocksList from './controller/pages/stockList/stocklist';
+// import StocksList from './controller/pages/stockList/stocklist';
 import RegisterUser from './controller/Admin/User/addUser';
+import UserEdit from './controller/Admin/User/updateUser';
+
 
 function App() {
   const stockTicker = 'IBM';
@@ -46,8 +48,10 @@ function App() {
           {/* <Route path='/stockchart' element={<StockChart symbol="AAPL" />}/> */}
           <Route path='/watchlist' element={<WatchList />}/>
           <Route path='/trading' element={<Trading />}/>
-          <Route path='/stocklist' element={<StocksList />}/>
+          {/* <Route path='/stocklist' element={<StocksList />}/> */}
           <Route path='/adduser' element={<RegisterUser />}/>
+          <Route path='/edituser' element={<UserEdit />}/>
+          
         </Routes>
         
       </div>

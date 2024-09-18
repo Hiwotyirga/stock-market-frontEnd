@@ -5,12 +5,12 @@ import NewsPost from '../News/newsPost';
 import ImageList from '../Admin/News/imageList';
 import DashBoard from './Dashbord';
 import UserList from '../Admin/User/userList';
-
-
+import { FaHome, FaUser, FaCog, FaSearch } from 'react-icons/fa';
 
 function ContentDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('Home');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -20,106 +20,105 @@ function ContentDashBoard() {
     setActiveTab(tabName);
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const navigateToClientPage = () => {
+    window.location.href = "http://localhost:3000/";
+  };
+
   return (
-    <div style={{ display: 'flex', height: 'auto' }}>
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar */}
       <div
         style={{
-          backgroundColor: '#90A4AE', 
-          width: isOpen ? '200px' : '70px',
-          transition: 'width 0.3s',
-          overflow: 'hidden',
+          backgroundColor: '#2C3E50',
+          width: isOpen ? '240px' : '80px',
+          transition: 'width 0.3s ease-in-out',
           display: 'flex',
-          height:"auto",
           flexDirection: 'column',
-          alignItems: isOpen ? 'flex-start' : 'center',
+          alignItems: 'flex-start',
+          paddingTop: '10px',
+          position: 'fixed',
+          height: '100vh',
+          overflow: 'hidden', // Prevent overflow of sidebar content
         }}
       >
-        <button onClick={toggleSidebar} style={{ background: 'none', border: 'none', color: '#fff', padding: '10px' }}>
-          ☰
-        </button>
-        <nav style={{ width: '100%' }}>
-          <ul style={{ listStyle: 'none', padding: 0, marginBottom: "50px", gap:"100px"}}>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#home"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Home')}>
-                  DashBoard
-                </a>
+        {/* Sidebar Header */}
+        <div style={{ width: '100%', padding: '10px', color: '#ECF0F1', textAlign: isOpen ? 'left' : 'center' }}>
+          <button onClick={toggleSidebar} style={{ background: 'none', border: 'none', color: '#ECF0F1' }}>
+            ☰
+          </button>
+         {/* {isOpen && <h2>Admin Panel</h2>} */}
+        </div>
 
-              )}
+        {/* Sidebar Links */}
+        <nav style={{ marginTop: '20px', width: '100%', position: 'relative' }}>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
+            <li style={{ padding: '10px 15px', display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#ECF0F1' }} onClick={() => handleTabClick('Home')}>
+              <FaHome style={{ fontSize: '24px' }} />
+              {isOpen && <span style={{ marginLeft: '10px' }}>DashBoard</span>}
             </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#useradmin"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('User Admin')}>
-                  Media
-                </a>
-              )}
+            <li style={{ padding: '10px 15px', display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#ECF0F1' }} onClick={() => handleTabClick('User Admin')}>
+              <FaUser style={{ fontSize: '24px' }} />
+              {isOpen && <span style={{ marginLeft: '10px' }}>Media</span>}
             </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#contentadmin"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Content Admin')}>
-                  User
-                </a>
-              )}
+            <li style={{ padding: '10px 15px', display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#ECF0F1' }} onClick={() => handleTabClick('Content Admin')}>
+              <FaUser style={{ fontSize: '24px' }} />
+              {isOpen && <span style={{ marginLeft: '10px' }}>User</span>}
             </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#search"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Search')}>
-                  Search
-                </a>
-              )}
+            <li style={{ padding: '10px 15px', display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#ECF0F1' }} onClick={() => handleTabClick('Search')}>
+              <FaSearch style={{ fontSize: '24px' }} />
+              {isOpen && <span style={{ marginLeft: '10px' }}>StockList</span>}
             </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#map"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('File')}>
-                  File
-                </a>
-              )}
-            </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#planner"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Planner')}>
-                  Video
-                </a>
-              )}
-            </li>
-            <li style={{ padding: '10px', display: 'flex', alignItems: 'center' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ width: '24px', height: '24px' }}>
-                <use xlinkHref="#settings"></use>
-              </svg>
-              {isOpen && (
-                <a href="#" style={{ marginLeft: '10px', color: '#fff' }} onClick={() => handleTabClick('Settings')}>
-                  Settings
-                </a>
+            <li style={{ padding: '10px 15px', cursor: 'pointer', color: '#ECF0F1', position: 'relative' }}>
+              <button 
+                onClick={toggleDropdown} 
+                style={{
+                  background: 'none', 
+                  border: 'none', 
+                  color: '#ECF0F1', 
+                  fontSize: '18px', 
+                  cursor: 'pointer',
+                  display: 'flex', 
+                  alignItems: 'center',
+                  width: isOpen ? '100%' : 'auto',
+                  position: 'relative' // Ensure button is relative to position the dropdown
+                }}>
+                <FaCog style={{ fontSize: '24px' }} />
+                {isOpen && <span style={{ marginLeft: '10px' }}>Options</span>}
+              </button>
+
+              {dropdownOpen && (
+                <ul style={{
+                  position: 'absolute', 
+                  top: '100%', // Position dropdown below the button
+                  left: '0', // Align dropdown with the left edge of the button
+                  backgroundColor: '#34495E', 
+                  color: '#fff', 
+                  listStyleType: 'none', 
+                  padding: '10px',
+                  borderRadius: '5px',
+                  width: isOpen ? '200px' : '150px', // Adjust width based on sidebar open state
+                  boxShadow: '0px 4px 8px rgba(0,0,0,0.2)', // Optional shadow for better visibility
+                  zIndex: 10, // Ensure dropdown is on top of other content
+                }}>
+                  <li onClick={navigateToClientPage} style={{ padding: '5px 0', cursor: 'pointer' }}>Go to Client Page</li>
+                  <li onClick={() => alert('Other Option')} style={{ padding: '5px 0', cursor: 'pointer' }}>Other Option</li>
+                </ul>
               )}
             </li>
           </ul>
         </nav>
       </div>
-      <div style={{ marginLeft: '20px', padding: '20px', flex: 1 }}>
-        {activeTab === 'Home' && <h1><DashBoard /></h1>}
-        {activeTab === 'User Admin' && <h1><ImageList /></h1>}
-        {activeTab === 'Content Admin' && <h1><UserList /></h1>}
+
+      {/* Main Content */}
+      <div style={{ marginLeft: isOpen ? '240px' : '80px', padding: '20px', transition: 'margin-left 0.3s ease-in-out', flex: 1 }}>
+        {activeTab === 'Home' && <DashBoard />}
+        {activeTab === 'User Admin' && <ImageList />}
+        {activeTab === 'Content Admin' && <UserList />}
         {activeTab === 'Search' && <h1>Hello Search</h1>}
-        {/* {activeTab === 'File' && <h1><NewsPost /></h1>} */}
-        {/* {activeTab === 'Planner' && <h1><VideoPost /></h1>} */}
         {activeTab === 'Settings' && <h1>Hello Settings</h1>}
       </div>
     </div>

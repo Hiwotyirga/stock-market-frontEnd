@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "./MediaDetail.module.css"; // Adjust the import path as needed
+import styles from "./MediaDetail.module.css";
 
 const MediaDetail = () => {
   const location = useLocation();
@@ -11,6 +11,9 @@ const MediaDetail = () => {
     return <div className={styles.container}>No media data available.</div>;
   }
 
+  const isImage = file.mimetype && file.mimetype.startsWith("image/");
+  const isVideo = file.mimetype && file.mimetype.startsWith("video/");
+
   return (
     <div className={styles.container}>
       <button onClick={() => navigate(-1)} className={styles.button}>
@@ -18,12 +21,12 @@ const MediaDetail = () => {
       </button>
       <h2 className={styles.title}>{file.content || "No title"}</h2>
       <div className={styles.media}>
-        {file.mimetype.startsWith("image/") ? (
+        {isImage ? (
           <img
             src={`http://localhost:8080/images/${file.filename}`}
             alt={file.filename || "Media"}
           />
-        ) : file.mimetype.startsWith("video/") ? (
+        ) : isVideo ? (
           <video
             src={`http://localhost:8080/images/${file.filename}`}
             controls
