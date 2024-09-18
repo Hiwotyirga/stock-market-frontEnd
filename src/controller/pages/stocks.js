@@ -33,7 +33,7 @@ function Stocks
     </div>
   </nav>
 
-   <StockMarketList />
+   {/* <StockMarketList /> */}
  
  </div>
   )
