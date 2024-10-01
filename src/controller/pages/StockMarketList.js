@@ -13,7 +13,8 @@ const StockMarketList = () => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/stock-market/stock/list');
+        // const response = await axios.get('http://localhost:8080/stock-market/stock/list');
+        const response = await axios.get('http://localhost:8080/market/stocks');
         setStockData(response.data);
         setLoading(false);
       } catch (error) {

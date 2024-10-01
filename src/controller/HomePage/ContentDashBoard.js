@@ -6,13 +6,16 @@ import ImageList from "../Admin/News/imageList";
 import DashBoard from "./Dashbord";
 import UserList from "../Admin/User/userList";
 import { FaHome, FaUser, FaCog, FaSearch } from "react-icons/fa";
-import LocalStock from "../Admin/StockList/LocalStock/TopGainersPost";
 import LocalStockList from "../Admin/StockList/LocalStock/Get";
+import TopLosersGet from "../Admin/StockList/LocalStock/TopLosersGet";
+import MostActivelyTradedGet from "../Admin/StockList/LocalStock/MostActivelyTradedGet";
+import TopGainersGet from "../Admin/StockList/LocalStock/TopGainersGet";
 
 function ContentDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [localStockDropdownOpen, setLocalStockDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -24,6 +27,10 @@ function ContentDashBoard() {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const toggleLocalStockDropdown = () => {
+    setLocalStockDropdownOpen(!localStockDropdownOpen);
   };
 
   const navigateToClientPage = () => {
@@ -44,10 +51,9 @@ function ContentDashBoard() {
           paddingTop: "10px",
           position: "fixed",
           height: "100vh",
-          overflow: "hidden", // Prevent overflow of sidebar content
+          overflow: "hidden",
         }}
       >
-        {/* Sidebar Header */}
         <div
           style={{
             width: "100%",
@@ -62,73 +68,80 @@ function ContentDashBoard() {
           >
             ☰
           </button>
-          {/* {isOpen && <h2>Admin Panel</h2>} */}
         </div>
-
-        {/* Sidebar Links */}
         <nav style={{ marginTop: "20px", width: "100%", position: "relative" }}>
           <ul style={{ listStyleType: "none", padding: 0 }}>
             <li
-              style={{
-                padding: "10px 15px",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                color: "#ECF0F1",
-              }}
+              style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("Home")}
             >
               <FaHome style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>DashBoard</span>}
             </li>
             <li
-              style={{
-                padding: "10px 15px",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                color: "#ECF0F1",
-              }}
+              style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("User Admin")}
             >
               <FaUser style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>Media</span>}
             </li>
             <li
-              style={{
-                padding: "10px 15px",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                color: "#ECF0F1",
-              }}
+              style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("Content Admin")}
             >
               <FaUser style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>User</span>}
             </li>
             <li
-              style={{
-                padding: "10px 15px",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                color: "#ECF0F1",
-              }}
-              onClick={() => handleTabClick("Search")}
+              style={{ padding: "10px 15px", cursor: "pointer", color: "#ECF0F1", position: "relative" }}
             >
-              <FaSearch style={{ fontSize: "24px" }} />
-              {isOpen && (
-                <span style={{ marginLeft: "10px" }}>Local Stock List</span>
+              <button
+                onClick={toggleLocalStockDropdown}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#ECF0F1",
+                  fontSize: "18px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  width: isOpen ? "100%" : "auto",
+                  position: "relative",
+                }}
+              >
+                <FaSearch style={{ fontSize: "24px" }} />
+                {isOpen && <span style={{ marginLeft: "10px" }}>Local Stock List</span>}
+              </button>
+              {localStockDropdownOpen && (
+                <ul
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "0",
+                    backgroundColor: "#34495E",
+                    color: "#fff",
+                    listStyleType: "none",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    width: isOpen ? "200px" : "150px",
+                    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+                    zIndex: 10,
+                  }}
+                >
+                  <li onClick={() => handleTabClick("Top Gainers")} style={{ padding: "5px 0", cursor: "pointer" }}>
+                    Top Gainers
+                  </li>
+                  <li onClick={() => handleTabClick("Top Losers")} style={{ padding: "5px 0", cursor: "pointer" }}>
+                    Top Losers
+                  </li>
+                  <li onClick={() => handleTabClick("Most Actively Traded")} style={{ padding: "5px 0", cursor: "pointer" }}>
+                    Most Actively Traded
+                  </li>
+                </ul>
               )}
             </li>
             <li
-              style={{
-                padding: "10px 15px",
-                cursor: "pointer",
-                color: "#ECF0F1",
-                position: "relative",
-              }}
+              style={{ padding: "10px 15px", cursor: "pointer", color: "#ECF0F1", position: "relative" }}
             >
               <button
                 onClick={toggleDropdown}
@@ -141,39 +154,32 @@ function ContentDashBoard() {
                   display: "flex",
                   alignItems: "center",
                   width: isOpen ? "100%" : "auto",
-                  position: "relative", // Ensure button is relative to position the dropdown
+                  position: "relative",
                 }}
               >
                 <FaCog style={{ fontSize: "24px" }} />
                 {isOpen && <span style={{ marginLeft: "10px" }}>Options</span>}
               </button>
-
               {dropdownOpen && (
                 <ul
                   style={{
                     position: "absolute",
-                    top: "100%", // Position dropdown below the button
-                    left: "0", // Align dropdown with the left edge of the button
+                    top: "100%",
+                    left: "0",
                     backgroundColor: "#34495E",
                     color: "#fff",
                     listStyleType: "none",
                     padding: "10px",
                     borderRadius: "5px",
-                    width: isOpen ? "200px" : "150px", // Adjust width based on sidebar open state
-                    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)", // Optional shadow for better visibility
-                    zIndex: 10, // Ensure dropdown is on top of other content
+                    width: isOpen ? "200px" : "150px",
+                    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+                    zIndex: 10,
                   }}
                 >
-                  <li
-                    onClick={navigateToClientPage}
-                    style={{ padding: "5px 0", cursor: "pointer" }}
-                  >
+                  <li onClick={navigateToClientPage} style={{ padding: "5px 0", cursor: "pointer" }}>
                     Go to Client Page
                   </li>
-                  <li
-                    onClick={() => alert("Other Option")}
-                    style={{ padding: "5px 0", cursor: "pointer" }}
-                  >
+                  <li onClick={() => alert("Other Option")} style={{ padding: "5px 0", cursor: "pointer" }}>
                     Other Option
                   </li>
                 </ul>
@@ -195,8 +201,10 @@ function ContentDashBoard() {
         {activeTab === "Home" && <DashBoard />}
         {activeTab === "User Admin" && <ImageList />}
         {activeTab === "Content Admin" && <UserList />}
-        {activeTab === "Search" && <LocalStockList />}
-        {activeTab === "Settings" && <h1>Hello Settings</h1>}
+        {activeTab === "Top Gainers" && <TopGainersGet/>}
+        {activeTab === "Top Losers" && <TopLosersGet/>}
+        {activeTab === "Most Actively Traded" && <MostActivelyTradedGet/>}
+        {activeTab === "Stock News" && <StockNews />}
       </div>
     </div>
   );

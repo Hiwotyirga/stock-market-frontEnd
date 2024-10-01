@@ -29,9 +29,12 @@ import RegisterUser from "./controller/Admin/User/addUser";
 import UserEdit from "./controller/Admin/User/updateUser";
 import LocalStockList from "./controller/Admin/StockList/LocalStock/Get";
 import LocalStock from "./controller/Admin/StockList/LocalStock/TopGainersPost";
-import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPost";
 import TopLosersPOst from "./controller/Admin/StockList/LocalStock/TopLosersPOst";
 import MostActivelyTradedPost from "./controller/Admin/StockList/LocalStock/MostActivelyTradedPost";
+import TopGainersGet from "./controller/Admin/StockList/LocalStock/TopGainersGet";
+import MostActivelyTradedGet from "./controller/Admin/StockList/LocalStock/MostActivelyTradedGet";
+import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPost";
+import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
 
 function App() {
   const stockTicker = "IBM";
@@ -62,7 +65,9 @@ function App() {
           <Route path="/adduser" element={<RegisterUser />} />
           <Route path="/edituser" element={<UserEdit />} />
           <Route path="/localstocklist" element={<LocalStockList />} />
-          {/* <Route path="/localstock" element={<LocalStock />} /> */}
+          <Route path="/looser/get" element={<TopLosersGet/>}/>
+          <Route path="/gain/get" element={<TopGainersGet/>}/>
+          <Route path="/active/get" element={<MostActivelyTradedGet/>}/>
         </Routes>
       </div>
     </Router>

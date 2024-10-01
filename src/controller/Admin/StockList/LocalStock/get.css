@@ -14,11 +14,11 @@
 }
 
 .table-container {
-  overflow-x: auto; /* Allow horizontal scroll if table is too wide */
+  overflow-x: auto;
 }
 
 .table {
-  width: 100%; /* Ensure the table takes up the full width of the container */
+  width: 100%; 
   border-collapse: collapse;
 }
 

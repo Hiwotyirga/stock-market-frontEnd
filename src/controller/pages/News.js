@@ -40,7 +40,7 @@ const News = () => {
       </h2> */}
       <div
         style={{
-          display: "flex",
+          display: "flex", 
           flexWrap: "wrap",
           gap: "20px",
           justifyContent: "space-between", // Ensure spacing between items

@@ -6,24 +6,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function TopLosersPOst() {
   const [gainers, setGainers] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
-  const [losers, setLosers] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
-  const [actives, setActives] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const stockData = {
-      // top_gainers: [gainers],
-      top_losers: [losers],
-      // most_actively_traded: [actives],
+      lastUpdated: new Date().toISOString(), // Automatically get the current date
+      top_gainers: [],
+      top_losers: [{
+        ticker: gainers.ticker,
+        price: gainers.price,
+        change_amount: gainers.changeAmount,
+        change_percentage: gainers.changePercentage,
+        volume: gainers.volume,
+      }], 
+      most_actively_traded: [] 
     };
 
     try {
       const response = await axios.post('http://localhost:8080/local-market/stocks', stockData);
+      console.log('Response data:', response.data); 
       swal('Stock Data Submitted Successfully!');
-      navigate('/contentdashbord');
+      navigate('/contentdashbord'); 
     } catch (error) {
       console.error('There was an error submitting the stock data!', error);
       swal('An error occurred. Please try again.');
@@ -32,35 +37,67 @@ function TopLosersPOst() {
 
   return (
     <div className="container-fluid p-3">
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-28px" }}></header>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-17px" }}></header>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
           {/* Top Gainers Section */}
-          
-          <h3>Top Losers</h3>
+          <h3>Top Looser</h3>
           <div className="form-group mb-3">
-            <label htmlFor="losersTicker">Ticker</label>
-            <input type="text" className="form-control" id="losersTicker" placeholder="Enter Ticker" value={losers.ticker} onChange={(e) => setLosers({ ...losers, ticker: e.target.value })} />
+            <label htmlFor="gainersTicker">Ticker</label>
+            <input
+              type="text"
+              className="form-control"
+              id="gainersTicker"
+              placeholder="Enter Ticker"
+              value={gainers.ticker}
+              onChange={(e) => setGainers({ ...gainers, ticker: e.target.value })}
+            />
           </div>
           <div className="form-group mb-3">
-            <label htmlFor="losersPrice">Price</label>
-            <input type="text" className="form-control" id="losersPrice" placeholder="Enter Price" value={losers.price} onChange={(e) => setLosers({ ...losers, price: e.target.value })} />
+            <label htmlFor="gainersPrice">Price</label>
+            <input
+              type="text"
+              className="form-control"
+              id="gainersPrice"
+              placeholder="Enter Price"
+              value={gainers.price}
+              onChange={(e) => setGainers({ ...gainers, price: e.target.value })}
+            />
           </div>
           <div className="form-group mb-3">
-            <label htmlFor="losersChangeAmount">Change Amount</label>
-            <input type="text" className="form-control" id="losersChangeAmount" placeholder="Enter Change Amount" value={losers.changeAmount} onChange={(e) => setLosers({ ...losers, changeAmount: e.target.value })} />
+            <label htmlFor="gainersChangeAmount">Change Amount</label>
+            <input
+              type="text"
+              className="form-control"
+              id="gainersChangeAmount"
+              placeholder="Enter Change Amount"
+              value={gainers.changeAmount}
+              onChange={(e) => setGainers({ ...gainers, changeAmount: e.target.value })}
+            />
           </div>
           <div className="form-group mb-3">
-            <label htmlFor="losersChangePercentage">Change Percentage</label>
-            <input type="text" className="form-control" id="losersChangePercentage" placeholder="Enter Change Percentage" value={losers.changePercentage} onChange={(e) => setLosers({ ...losers, changePercentage: e.target.value })} />
+            <label htmlFor="gainersChangePercentage">Change Percentage</label>
+            <input
+              type="text"
+              className="form-control"
+              id="gainersChangePercentage"
+              placeholder="Enter Change Percentage"
+              value={gainers.changePercentage}
+              onChange={(e) => setGainers({ ...gainers, changePercentage: e.target.value })}
+            />
           </div>
           <div className="form-group mb-3">
-            <label htmlFor="losersVolume">Volume</label>
-            <input type="text" className="form-control" id="losersVolume" placeholder="Enter Volume" value={losers.volume} onChange={(e) => setLosers({ ...losers, volume: e.target.value })} />
+            <label htmlFor="gainersVolume">Volume</label>
+            <input
+              type="text"
+              className="form-control"
+              id="gainersVolume"
+              placeholder="Enter Volume"
+              value={gainers.volume}
+              onChange={(e) => setGainers({ ...gainers, volume: e.target.value })}
+            />
           </div>
 
-          {/* Most Actively Traded Section */}
-          
           <button type="submit" className="btn btn-primary w-100">Submit</button>
         </form>
       </div>
