@@ -29,14 +29,21 @@ function TopGainersGet() {
 
     fetchStocks();
   }, []);
+ 
+  // Inside TopGainersGet component
+const handleEdit = (id) => {
+  navigate(`/editgain/${id}`); // Pass the stock id to the edit page
+};
+
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete( `http://localhost:8080/local-market/stocks//${id}`, {
+      const response = await axios.delete(`http://localhost:8080/local-market/stocks/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
+      
 
       if (response.status === 200) {
         swal('Stock deleted successfully.');
@@ -87,8 +94,11 @@ function TopGainersGet() {
                     <td>
                       <span
                         style={{ marginRight: '20px', cursor: 'pointer' }}
+                        className="action-icon"
+                        onClick={() => handleEdit(stock.id)}
+                        title="Edit"
                       >
-                        <Link to='/edituser'><FontAwesomeIcon icon={faEdit} /></Link>
+                        <FontAwesomeIcon icon={faEdit} />
                       </span>
                       <span
                         className="action-icon"

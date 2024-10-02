@@ -29,9 +29,15 @@ function TopLosersGet() {
     fetchStocks();
   }, []);
 
+
+ const handleEdit = (id) => {
+  navigate(`/editlooser/${id}`); 
+};
+
+
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete( `http://localhost:8080/local-market/stocks//${id}`, {
+      const response = await axios.delete( `http://localhost:8080/local-market/stocks/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
@@ -84,20 +90,24 @@ function TopLosersGet() {
                     <td>{stock.change_percentage}</td>
                     <td>{stock.volume}</td>
                     <td>
-                      <span
-                        style={{ marginRight: '20px', cursor: 'pointer' }}
-                      >
-                        <Link to='/edituser'><FontAwesomeIcon icon={faEdit} /></Link>
-                      </span>
-                      <span
-                        className="action-icon"
-                        onClick={() => handleDelete(stock.id)}
-                        title="Delete"
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </span>
-                    </td>
+                        <span
+                          style={{ marginRight: '20px', cursor: 'pointer' }}
+                          className="action-icon"
+                          onClick={() => handleEdit(stock.id)}  // Ensure stock.id is correct
+                          title="Edit"
+                        >
+                          <FontAwesomeIcon icon={faEdit} />
+                        </span>
+                        <span
+                          className="action-icon"
+                          onClick={() => handleDelete(stock.id)}
+                          title="Delete"
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </span>
+                      </td>
+
                   </tr>
                 ))
               )}

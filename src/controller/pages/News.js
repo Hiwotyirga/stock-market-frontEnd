@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 
 const News = () => {
   const [files, setFiles] = useState([]);
+  const [watchlist, setWatchlist] = useState([]); // State for watchlist
+  const [popupVisible, setPopupVisible] = useState({}); // State to manage popup visibility
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFiles = async () => {
       try {
         const response = await axios.get("http://localhost:8080/media/files");
-        const sortedFiles = response.data.items
-          .sort((a, b) => new Date(b.postTime) - new Date(a.postTime));
+        const sortedFiles = response.data.items.sort(
+          (a, b) => new Date(b.postTime) - new Date(a.postTime)
+        );
         setFiles(sortedFiles);
       } catch (error) {
         console.error("Error fetching files:", error);
@@ -21,8 +24,23 @@ const News = () => {
   }, []);
 
   const handleMediaClick = (file) => {
-    // Navigate to the full details page with file data
     navigate(`/media/${file.id}`, { state: { file } });
+  };
+
+  const addToWatchlist = (file) => {
+    // Check if the file is already in the watchlist
+    if (watchlist.find((item) => item.id === file.id)) {
+      return; // Don't add if already in watchlist
+    }
+    setWatchlist([...watchlist, file]); // Add the file to the watchlist
+    showPopup(file.id); // Show the popup
+  };
+
+  const showPopup = (id) => {
+    setPopupVisible((prev) => ({ ...prev, [id]: true })); // Show popup for the clicked file
+    setTimeout(() => {
+      setPopupVisible((prev) => ({ ...prev, [id]: false })); // Hide popup after 2 seconds
+    }, 2000);
   };
 
   return (
@@ -35,23 +53,20 @@ const News = () => {
         maxHeight: "calc(100vh - 40px)",
       }}
     >
-      {/* <h2 style={{ color: "#333", textAlign: "center", marginBottom: "20px" }}>
-        Latest News
-      </h2> */}
       <div
         style={{
-          display: "flex", 
+          display: "flex",
           flexWrap: "wrap",
           gap: "20px",
-          justifyContent: "space-between", // Ensure spacing between items
+          justifyContent: "space-between",
         }}
       >
-        {files.map((file, index) => (
+        {files.map((file) => (
           <div
             key={file.id}
             onClick={() => handleMediaClick(file)}
             style={{
-              width: "23%", // Adjust width to fit 4 items per row
+              width: "23%",
               height: "400px",
               margin: "15px 0",
               color: "#666",
@@ -134,6 +149,50 @@ const News = () => {
               }}
             >
               {new Date(file.postTime).toLocaleDateString()}
+            </div>
+
+            {/* Circular Add to Watchlist Button */}
+            <div
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering media click
+                addToWatchlist(file);
+              }}
+              style={{
+                position: "absolute",
+                bottom: "10px",
+                right: "10px",
+                width: "30px", // Width of the circular button
+                height: "30px", // Height of the circular button
+                borderRadius: "50%", // Make it circular
+                backgroundColor: "green", // Background color of the button
+                color: "white", // Color of the plus icon
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <span style={{ fontSize: "15px", lineHeight: "15px", margin: "0" }}>+</span>
+
+              {/* Popup for "Add to Watchlist" message */}
+              {popupVisible[file.id] && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-10px",
+                    right: "35px",
+                    backgroundColor: "white",
+                    color: "black",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                    fontSize: "12px",
+                  }}
+                >
+                  Add to Watchlist
+                </span>
+              )}
             </div>
           </div>
         ))}

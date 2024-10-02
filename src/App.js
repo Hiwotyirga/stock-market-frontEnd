@@ -36,6 +36,9 @@ import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPo
 import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
 import LoginAdmin from "./controller/Admin/Auth/login";
 import EditUser from "./controller/Admin/User/updateUser";
+import TopLosersPut from "./controller/Admin/StockList/UpdateLocalStock/TopLosersPut";
+import TopGainersPUt from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
+import EditGainer from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
 
 function App() {
   const stockTicker = "IBM";
@@ -66,6 +69,8 @@ function App() {
           <Route path="/activetrade" element={<MostActivelyTradedPost/>}/>
           <Route path="/adduser" element={<RegisterUser />} />
           <Route path="/edituser" element={<UserEdit />} />
+          <Route path="/editlooser/:id" element={<TopLosersPut/>}/>
+          <Route path="/editgain/:id" element={<EditGainer />} />
           <Route path="/localstocklist" element={<LocalStockList />} />
           <Route path="/looser/get" element={<TopLosersGet/>}/>
           <Route path="/gain/get" element={<TopGainersGet/>}/>
