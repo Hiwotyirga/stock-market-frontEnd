@@ -8,6 +8,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const[role,setRole]=useState("")
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [list, setList] =useState([])
@@ -19,13 +20,15 @@ function Register() {
       name,
       email,
       password,
+      role
     };
   
     try {
       const response = await axios.post("http://localhost:8080/register", data);
       setList(response.data);
-      swal("SUCCESSFULLY LOGIN")
-      navigate('/stock-admin'); 
+      swal("SUCCESSFULLY REGISTER")
+      navigate("");
+     
     } catch (error) {
       if (error.response && error.response.status === 409) {
         
@@ -45,7 +48,7 @@ function Register() {
         <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>Register</h2>
         <div>
           <Button variant="primary">
-            <Link to="/stock-admin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
+            <Link to="" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
           </Button>
         </div>
       </header>

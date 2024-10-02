@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';  // Ensure Bootstrap CSS is imported
 
-function Login() {
+function LoginAdmin() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -26,7 +26,7 @@ function Login() {
       const token = response.data.access_token;
       localStorage.setItem('jwt', response.data.access_token);
       swal("SUCCESSFULLY LOGIN")
-      navigate('/user');
+      navigate('/contentdashbord');
 
     } catch (error) {
       console.error('There was an error submitting the form!', error);
@@ -86,4 +86,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginAdmin;

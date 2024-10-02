@@ -6,7 +6,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import UserList from "./controller/Admin/User/userList";
-
 import Login from "./controller/Auth/Login";
 import ContentDashBoard from "./controller/HomePage/ContentDashBoard";
 import StockNews from "./controller/Client/StockNews";
@@ -35,6 +34,8 @@ import TopGainersGet from "./controller/Admin/StockList/LocalStock/TopGainersGet
 import MostActivelyTradedGet from "./controller/Admin/StockList/LocalStock/MostActivelyTradedGet";
 import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPost";
 import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
+import LoginAdmin from "./controller/Admin/Auth/login";
+import EditUser from "./controller/Admin/User/updateUser";
 
 function App() {
   const stockTicker = "IBM";
@@ -43,20 +44,21 @@ function App() {
       <div>
         <Routes>
           <Route path="/register" element={<Register />} />
-          {/* <Route path='/newspost' element={<NewsPost />}/> */}
           <Route path="/userList" element={<UserList />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/stock-admin" element={<Login />} />
+          <Route path="" element={<Login />} />
+          <Route path="/stock-admin" element={<LoginAdmin />} />
           <Route path="/contentdashbord" element={<ContentDashBoard />} />
           <Route path="/stocknews" element={<StockNews />} />
           <Route path="/file/:id" component={FileDetail} />
-          <Route path="" element={<NavbarComponent />} />
+          <Route path="/user" element={<NavbarComponent />} />
           <Route path="/latestnews" element={<LatestNews />} />
           <Route path="/uploadFile" element={<ImagePost />} />
           <Route path="/imageList" element={<ImageList />} />
           <Route path="/stocks/overview" element={<Stocks />} />
           <Route path="/analysis" element={<Analysis />} />
           <Route path="/media/:id" element={<MediaDetail />} />
+          <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/toploser" element={< TopLosersPOst/>}/>
           <Route path="/watchlist" element={<WatchList />} />
           <Route path="/trading" element={<Trading />} />

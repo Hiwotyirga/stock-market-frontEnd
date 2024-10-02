@@ -14,11 +14,22 @@ function UserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/register/user/list/');
+        const response = await fetch('http://localhost:8080/register');
         const data = await response.json();
-        setUsers(data); // Set users directly as data
+        
+        // Log the data to verify its structure
+        console.log('Fetched users:', data);
+        
+        // Check if data is an array
+        if (Array.isArray(data)) {
+          setUsers(data); // Set users as the array
+        } else {
+          console.error('Fetched data is not an array:', data);
+          setUsers([]); // Fallback to an empty array
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
+        swal('Error fetching users. Please try again.');
       }
     };
 
@@ -26,7 +37,7 @@ function UserList() {
   }, []);
 
   const handleEdit = (id) => {
-    navigate(`/edituser/${id}`); // Navigate to EditUser page
+    navigate(`/edituser/${id}`); 
   };
 
   const handleDelete = async (id) => {
@@ -80,12 +91,10 @@ function UserList() {
                     <td>{user.role}</td>
                     <td>
                       <span
-                        // className="action-icon"
-                        // onClick={() => handleEdit(user.id)}
-                        // title="Edit"
                         style={{ marginRight: "20px", cursor: "pointer" }}
+                        onClick={() => handleEdit(user.id)} 
                       >
-                       <Link to='/edituser'>  <FontAwesomeIcon icon={faEdit} /></Link>
+                        <FontAwesomeIcon icon={faEdit} />
                       </span>
                       <span
                         className="action-icon"
