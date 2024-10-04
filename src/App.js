@@ -10,7 +10,6 @@ import Login from "./controller/Auth/Login";
 import ContentDashBoard from "./controller/HomePage/ContentDashBoard";
 import StockNews from "./controller/Client/StockNews";
 import Register from "./controller/Auth/register";
-import NewsPost from "./controller/News/newsPost";
 import Logout from "./controller/Auth/logout";
 import NavbarComponent from "./controller/HomePage/NavbarComponent";
 import ImagePost from "./controller/Admin/News/imagePost";
@@ -18,12 +17,9 @@ import ImageList from "./controller/Admin/News/imageList";
 import Stocks from "./controller/pages/stocks";
 import Analysis from "./controller/pages/analysis";
 import WatchList from "./controller/pages/watchlist";
-import Trading from "./controller/pages/trading";
 import LatestNews from "./controller/pages/latestnews";
 import FileDetail from "./controller/Admin/News/FileDetail";
-// import StockChart from './controller/stock/StockChart';
 import MediaDetail from "./controller/pages/MediaDetail";
-// import StocksList from './controller/pages/stockList/stocklist';
 import RegisterUser from "./controller/Admin/User/addUser";
 import UserEdit from "./controller/Admin/User/updateUser";
 import LocalStockList from "./controller/Admin/StockList/LocalStock/Get";
@@ -36,10 +32,12 @@ import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPo
 import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
 import LoginAdmin from "./controller/Admin/Auth/login";
 import EditUser from "./controller/Admin/User/updateUser";
-import TopLosersPut from "./controller/Admin/StockList/UpdateLocalStock/TopLosersPut";
-import TopGainersPUt from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
 import EditGainer from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
-
+import Trading from "./controller/pages/Trade/trading";
+import TransactionForm from "./controller/pages/TransactionData/post";
+import MostActivelyTradedPut from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
+import EditLooser from "./controller/Admin/StockList/UpdateLocalStock/TopLosersPut";
+import MostActivelyTradedUpdate from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
 function App() {
   const stockTicker = "IBM";
   return (
@@ -64,17 +62,19 @@ function App() {
           <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/toploser" element={< TopLosersPOst/>}/>
           <Route path="/watchlist" element={<WatchList />} />
-          <Route path="/trading" element={<Trading />} />
+          <Route path="/trading" element={<Trading/>} />
           <Route path="/topGainer" element={< TopGainersPost/>}/>
           <Route path="/activetrade" element={<MostActivelyTradedPost/>}/>
           <Route path="/adduser" element={<RegisterUser />} />
           <Route path="/edituser" element={<UserEdit />} />
-          <Route path="/editlooser/:id" element={<TopLosersPut/>}/>
           <Route path="/editgain/:id" element={<EditGainer />} />
+          <Route path="/editloser/:id" element={<EditLooser />} />
+          <Route path="/most-actively-traded/:id" element={<MostActivelyTradedPut />} /> 
           <Route path="/localstocklist" element={<LocalStockList />} />
           <Route path="/looser/get" element={<TopLosersGet/>}/>
           <Route path="/gain/get" element={<TopGainersGet/>}/>
           <Route path="/active/get" element={<MostActivelyTradedGet/>}/>
+          <Route path="/transaction" element={<TransactionForm />}/>
         </Routes>
       </div>
     </Router>

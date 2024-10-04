@@ -32,9 +32,6 @@ function Trading
       </ul>
     </div>
   </nav>
-
-  {/* <LatestNews /> */}
-  {/* <StockNews /> */}
   Trading
  </div>
   )

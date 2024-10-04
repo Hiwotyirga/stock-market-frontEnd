@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../App.css";
 import StockNews from "../Client/StockNews";
-import NewsPost from "../News/newsPost";
+// import NewsPost from "../News/newsPost";
 import ImageList from "../Admin/News/imageList";
 import DashBoard from "./Dashbord";
 import UserList from "../Admin/User/userList";

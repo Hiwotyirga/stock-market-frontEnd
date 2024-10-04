@@ -13,21 +13,19 @@ function EditGainer() {
     const fetchStock = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/local-market/stocks/${id}`);
-        
-        // Check if the response contains top_gainers and has at least one element
-        // if (response.data.top_gainers && response.data.top_gainers.length > 0) {
-        //   const stock = response.data.top_gainers[0]; // Assuming one stock is returned
-        //   setGainer({
-        //     ticker: stock.ticker,
-        //     price: stock.price,
-        //     changeAmount: stock.change_amount,
-        //     changePercentage: stock.change_percentage,
-        //     volume: stock.volume,
-        //   });
-        // } else {
-        //   swal('No stock data found!');
-        // }
-        setGainer(response)
+        // Set the data directly to gainer, assuming your API returns the correct structure
+        if (response.data.top_gainers && response.data.top_gainers.length > 0) {
+          const stock = response.data.top_gainers[0];
+          setGainer({
+            ticker: stock.ticker,
+            price: stock.price,
+            changeAmount: stock.change_amount,
+            changePercentage: stock.change_percentage,
+            volume: stock.volume,
+          });
+        } else {
+          swal('No stock data found for this ID.');
+        }
       } catch (error) {
         console.error('Error fetching stock data:', error);
         swal('An error occurred while fetching stock data.');
@@ -54,16 +52,15 @@ function EditGainer() {
     try {
       await axios.put(`http://localhost:8080/local-market/stocks/${id}`, updatedStockData);
       swal('Stock Updated Successfully!');
-      navigate('/topGainers'); // Navigate back to the top gainers list after the update
+      navigate('/contentdashbord');
     } catch (error) {
-      console.error('Error updating stock:', error);
       swal('An error occurred while updating the stock. Please try again.');
     }
   };
 
   return (
     <div className="container-fluid p-3">
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded"></header>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-45px",  width:"1400", height:"70px"}}></header>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
           <h3>Edit Stock</h3>

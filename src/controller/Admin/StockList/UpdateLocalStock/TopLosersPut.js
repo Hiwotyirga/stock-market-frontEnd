@@ -1,71 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
-function TopLosersPut() {
-  const [gainers, setGainers] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
-  const [topGainers, setTopGainers] = useState([]);
-//   const navigate = useNavigate();
+function EditLooser() {
+  const [gainer, setGainer] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
   const navigate = useNavigate();
-  const { id } = useParams();
-
+  const { id } = useParams(); // Get the stock id from the URL parameters
 
   useEffect(() => {
-    const fetchStocks = async () => {
+    const fetchStock = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/local-market/stocks/${id}`);
-        const data = await response.json();
-
-        const gainers = data
-          .filter(item => item.top_losers && item.top_losers.length > 0) 
-          .flatMap(item => item.top_losers); 
-
-        setTopGainers(gainers); 
+        const response = await axios.get(`http://localhost:8080/local-market/stocks/${id}`);
+        // Set the data directly to gainer, assuming your API returns the correct structure
+        if (response.data.top_losers && response.data.top_losers.length > 0) {
+          const stock = response.data.top_losers[0];
+          setGainer({
+            ticker: stock.ticker,
+            price: stock.price,
+            changeAmount: stock.change_amount,
+            changePercentage: stock.change_percentage,
+            volume: stock.volume,
+          });
+        } else {
+          swal('No stock data found for this ID.');
+        }
       } catch (error) {
-        console.error('Error fetching stocks:', error);
+        console.error('Error fetching stock data:', error);
+        swal('An error occurred while fetching stock data.');
       }
     };
 
-    fetchStocks();
-  }, []);
+    fetchStock();
+  }, [id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const stockData = {
-      lastUpdated: new Date().toISOString(), 
-      top_gainers: [],
-      top_losers: [{
-        ticker: gainers.ticker,
-        price: gainers.price,
-        change_amount: gainers.changeAmount,
-        change_percentage: gainers.changePercentage,
-        volume: gainers.volume,
-      }], 
-      most_actively_traded: [] 
+    const updatedStockData = {
+      top_losers: [
+        {
+          ticker: gainer.ticker,
+          price: gainer.price,
+          change_amount: gainer.changeAmount,
+          change_percentage: gainer.changePercentage,
+          volume: gainer.volume,
+        },
+      ],
     };
 
     try {
-      const response = await axios.put('http://localhost:8080/local-market/stocks', stockData);
-      console.log('Response data:', response.data); 
-      swal('Stock Data Submitted Successfully!');
-      navigate('/contentdashbord'); 
+      await axios.put(`http://localhost:8080/local-market/stocks/${id}`, updatedStockData);
+      swal('Stock Updated Successfully!');
+      navigate('/contentdashbord');
     } catch (error) {
-      console.error('There was an error submitting the stock data!', error);
-      swal('An error occurred. Please try again.');
+      swal('An error occurred while updating the stock. Please try again.');
     }
   };
 
   return (
     <div className="container-fluid p-3">
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-17px" }}></header>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-45px",  width:"1400", height:"70px"}}></header>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
-          {/* Top Gainers Section */}
-          <h3>Top Looser</h3>
+          <h3>Edit Stock</h3>
           <div className="form-group mb-3">
             <label htmlFor="gainersTicker">Ticker</label>
             <input
@@ -73,8 +71,8 @@ function TopLosersPut() {
               className="form-control"
               id="gainersTicker"
               placeholder="Enter Ticker"
-              value={gainers.ticker}
-              onChange={(e) => setGainers({ ...gainers, ticker: e.target.value })}
+              value={gainer.ticker}
+              onChange={(e) => setGainer({ ...gainer, ticker: e.target.value })}
             />
           </div>
           <div className="form-group mb-3">
@@ -84,8 +82,8 @@ function TopLosersPut() {
               className="form-control"
               id="gainersPrice"
               placeholder="Enter Price"
-              value={gainers.price}
-              onChange={(e) => setGainers({ ...gainers, price: e.target.value })}
+              value={gainer.price}
+              onChange={(e) => setGainer({ ...gainer, price: e.target.value })}
             />
           </div>
           <div className="form-group mb-3">
@@ -95,8 +93,8 @@ function TopLosersPut() {
               className="form-control"
               id="gainersChangeAmount"
               placeholder="Enter Change Amount"
-              value={gainers.changeAmount}
-              onChange={(e) => setGainers({ ...gainers, changeAmount: e.target.value })}
+              value={gainer.changeAmount}
+              onChange={(e) => setGainer({ ...gainer, changeAmount: e.target.value })}
             />
           </div>
           <div className="form-group mb-3">
@@ -106,8 +104,8 @@ function TopLosersPut() {
               className="form-control"
               id="gainersChangePercentage"
               placeholder="Enter Change Percentage"
-              value={gainers.changePercentage}
-              onChange={(e) => setGainers({ ...gainers, changePercentage: e.target.value })}
+              value={gainer.changePercentage}
+              onChange={(e) => setGainer({ ...gainer, changePercentage: e.target.value })}
             />
           </div>
           <div className="form-group mb-3">
@@ -117,16 +115,16 @@ function TopLosersPut() {
               className="form-control"
               id="gainersVolume"
               placeholder="Enter Volume"
-              value={gainers.volume}
-              onChange={(e) => setGainers({ ...gainers, volume: e.target.value })}
+              value={gainer.volume}
+              onChange={(e) => setGainer({ ...gainer, volume: e.target.value })}
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Update</button>
+          <button type="submit" className="btn btn-primary w-100">Update Stock</button>
         </form>
       </div>
     </div>
   );
 }
 
-export default TopLosersPut;
+export default EditLooser;

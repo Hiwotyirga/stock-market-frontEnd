@@ -15,12 +15,11 @@ function TopLosersGet() {
       try {
         const response = await fetch('http://localhost:8080/local-market/stocks');
         const data = await response.json();
-
         const gainers = data
-          .filter(item => item.top_losers && item.top_losers.length > 0) 
-          .flatMap(item => item.top_losers); 
+          .filter(item => item.top_losers && item.top_losers.length > 0)
+          .flatMap(item => item.top_losers.map(gainer => ({ ...gainer, parentId: item.id })));
 
-        setTopGainers(gainers); 
+        setTopGainers(gainers);
       } catch (error) {
         console.error('Error fetching stocks:', error);
       }
@@ -29,15 +28,13 @@ function TopLosersGet() {
     fetchStocks();
   }, []);
 
-
- const handleEdit = (id) => {
-  navigate(`/editlooser/${id}`); 
-};
-
+  const handleEdit = (parentId) => {
+    navigate(`/editloser/${parentId}`); // Pass the stock id to the edit page
+  };
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete( `http://localhost:8080/local-market/stocks/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/local-market/stocks/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
@@ -45,7 +42,7 @@ function TopLosersGet() {
 
       if (response.status === 200) {
         swal('Stock deleted successfully.');
-        setTopGainers(topGainers.filter(stock => stock.id !== id));
+        setTopGainers(topGainers.filter(stock => stock.parentId !== id)); // Update filter to use parentId
       } else {
         swal('Failed to delete stock. Please try again.');
       }
@@ -59,7 +56,7 @@ function TopLosersGet() {
     <div className="container" style={{ fontSize: '15px' }}>
       <main className="main-content">
         <div className="header">
-          <h1>Top Looser Stocks</h1>
+          <h1>Top Loser Stocks</h1>
           <button className="btn-primary">
             <Link to='/toploser' style={{ color: 'white' }}>Add Stock</Link>
           </button>
@@ -90,24 +87,23 @@ function TopLosersGet() {
                     <td>{stock.change_percentage}</td>
                     <td>{stock.volume}</td>
                     <td>
-                        <span
-                          style={{ marginRight: '20px', cursor: 'pointer' }}
-                          className="action-icon"
-                          onClick={() => handleEdit(stock.id)}  // Ensure stock.id is correct
-                          title="Edit"
-                        >
-                          <FontAwesomeIcon icon={faEdit} />
-                        </span>
-                        <span
-                          className="action-icon"
-                          onClick={() => handleDelete(stock.id)}
-                          title="Delete"
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </span>
-                      </td>
-
+                      <span
+                        style={{ marginRight: '20px', cursor: 'pointer' }}
+                        className="action-icon"
+                        onClick={() => handleEdit(stock.parentId)} // Use parentId for editing
+                        title="Edit"
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </span>
+                      <span
+                        className="action-icon"
+                        onClick={() => handleDelete(stock.parentId)} 
+                        title="Delete"
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </span>
+                    </td>
                   </tr>
                 ))
               )}

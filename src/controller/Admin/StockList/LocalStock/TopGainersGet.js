@@ -16,12 +16,12 @@ function TopGainersGet() {
         const response = await fetch('http://localhost:8080/local-market/stocks');
         const data = await response.json();
 
-        // Extract and filter top_gainers from each object in the array
+        // Extract and include the parent stock ID with each top_gainer object
         const gainers = data
-          .filter(item => item.top_gainers && item.top_gainers.length > 0) // Filter items with top_gainers
-          .flatMap(item => item.top_gainers); // Flatten the top_gainers array
+          .filter(item => item.top_gainers && item.top_gainers.length > 0)
+          .flatMap(item => item.top_gainers.map(gainer => ({ ...gainer, parentId: item.id })));
 
-        setTopGainers(gainers); // Set the filtered and flattened top_gainers data
+        setTopGainers(gainers); // Set the filtered and flattened top_gainers data with parentId
       } catch (error) {
         console.error('Error fetching stocks:', error);
       }
@@ -29,12 +29,10 @@ function TopGainersGet() {
 
     fetchStocks();
   }, []);
- 
-  // Inside TopGainersGet component
-const handleEdit = (id) => {
-  navigate(`/editgain/${id}`); // Pass the stock id to the edit page
-};
 
+  const handleEdit = (parentId) => {
+    navigate(`/editgain/${parentId}`); // Pass the stock id to the edit page
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -43,11 +41,10 @@ const handleEdit = (id) => {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-      
 
       if (response.status === 200) {
         swal('Stock deleted successfully.');
-        setTopGainers(topGainers.filter(stock => stock.id !== id));
+        setTopGainers(topGainers.filter(stock => stock.parentId !== id)); // Update filter to use parentId
       } else {
         swal('Failed to delete stock. Please try again.');
       }
@@ -95,14 +92,14 @@ const handleEdit = (id) => {
                       <span
                         style={{ marginRight: '20px', cursor: 'pointer' }}
                         className="action-icon"
-                        onClick={() => handleEdit(stock.id)}
+                        onClick={() => handleEdit(stock.parentId)} // Use parentId for editing
                         title="Edit"
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </span>
                       <span
                         className="action-icon"
-                        onClick={() => handleDelete(stock.id)}
+                        onClick={() => handleDelete(stock.parentId)} 
                         title="Delete"
                         style={{ cursor: 'pointer' }}
                       >

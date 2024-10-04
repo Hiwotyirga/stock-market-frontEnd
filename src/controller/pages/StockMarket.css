@@ -14,7 +14,7 @@
 }
 
 .column-title {
-  font-size: 1.5em;
+  font-size: 1.4em;
   margin-bottom: 10px;
   text-align: center;
   color: #333;
@@ -33,14 +33,22 @@
   flex: 1;
   text-align: center;
 }
-
+.span{
+  font-size: 10px;
+}
 .item {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
 }
+.column-title {
+  font-size: 1.2em; /* Slightly smaller than before */
+}
 
+.headers, .item {
+  font-size: 0.8em; /* Smaller size for headers and items */
+}
 .item:last-child {
   border-bottom: none;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './StockMarket.css'; // Import CSS file for styling
+import './StockMarket.css'; 
+import { Link } from 'react-router-dom';
 
 const StockMarketList = () => {
   const [stockData, setStockData] = useState({
@@ -13,18 +14,45 @@ const StockMarketList = () => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        // const response = await axios.get('http://localhost:8080/stock-market/stock/list');
-        const response = await axios.get('http://localhost:8080/market/stocks');
-        setStockData(response.data);
+        const response = await axios.get('http://localhost:8080/local-market/stocks',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          }
+        );
+  
+        const topGainers = [];
+        const topLosers = [];
+        const mostActivelyTraded = [];
+  
+        response.data.forEach(item => {
+          if (item.top_gainers) {
+            topGainers.push(...item.top_gainers);
+          }
+          if (item.top_losers) {
+            topLosers.push(...item.top_losers);
+          }
+          if (item.most_actively_traded) {
+            mostActivelyTraded.push(...item.most_actively_traded);
+          }
+        });
+  
+        setStockData({
+          top_gainers: topGainers,
+          top_losers: topLosers,
+          most_actively_traded: mostActivelyTraded,
+        });
         setLoading(false);
       } catch (error) {
         console.error('Error fetching stock data:', error);
         setLoading(false);
       }
     };
-
+  
     fetchStockData();
   }, []);
+  
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -61,10 +89,11 @@ const StockMarketList = () => {
                 <span className="change-percentage">{item.change_percentage || item.changePercentage}%</span>
                 <span className="volume">{item.volume}</span>
                 <button
-                  onClick={() => handleBuyClick(item.ticker)}
+                  // onClick={() => handleBuyClick(item.ticker)}
                   className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}
                 >
-                  Buy
+                  {/* Buy */}
+                  <Link to='/transaction' > Buy</Link>
                 </button>
               </div>
             );
