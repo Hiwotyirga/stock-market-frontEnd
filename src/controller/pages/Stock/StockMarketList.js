@@ -14,18 +14,16 @@ const StockMarketList = () => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/local-market/stocks',
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-            },
-          }
-        );
-  
+        const response = await axios.get('http://localhost:8080/local-market/stocks', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          },
+        });
+
         const topGainers = [];
         const topLosers = [];
         const mostActivelyTraded = [];
-  
+
         response.data.forEach(item => {
           if (item.top_gainers) {
             topGainers.push(...item.top_gainers);
@@ -37,7 +35,7 @@ const StockMarketList = () => {
             mostActivelyTraded.push(...item.most_actively_traded);
           }
         });
-  
+
         setStockData({
           top_gainers: topGainers,
           top_losers: topLosers,
@@ -49,10 +47,9 @@ const StockMarketList = () => {
         setLoading(false);
       }
     };
-  
+
     fetchStockData();
   }, []);
-  
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -61,10 +58,6 @@ const StockMarketList = () => {
   if (!stockData || !Array.isArray(stockData.top_gainers) || !Array.isArray(stockData.top_losers) || !Array.isArray(stockData.most_actively_traded)) {
     return <div className="no-data">No data available</div>;
   }
-
-  const handleBuyClick = (ticker) => {
-    alert(`You clicked buy for ${ticker}. Implement the buying functionality as needed.`);
-  };
 
   const renderColumn = (title, items, isLoser = false) => (
     <div className={`column ${isLoser ? 'loser' : 'gainer'}`}>
@@ -88,13 +81,11 @@ const StockMarketList = () => {
                 <span className="change-amount">${item.change_amount || item.changeAmount}</span>
                 <span className="change-percentage">{item.change_percentage || item.changePercentage}%</span>
                 <span className="volume">{item.volume}</span>
-                <button
-                  // onClick={() => handleBuyClick(item.ticker)}
-                  className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}
-                >
-                  {/* Buy */}
-                  <Link to='/transaction' > Buy</Link>
-                </button>
+                <Link to={`/stocks/${item.ticker}`}>
+                  <button className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}>
+                    View Details
+                  </button>
+                </Link>
               </div>
             );
           })}
@@ -107,8 +98,8 @@ const StockMarketList = () => {
 
   return (
     <div className="container">
-      {renderColumn('Top Gainers', stockData.top_gainers)} {/* Green button */}
-      {renderColumn('Top Losers', stockData.top_losers, true)} {/* Red button */}
+      {renderColumn('Top Gainers', stockData.top_gainers)} 
+      {renderColumn('Top Losers', stockData.top_losers, true)} 
       {renderColumn('Most Actively Traded Stocks', stockData.most_actively_traded)}
     </div>
   );

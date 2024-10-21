@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faComment } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-const HomePage = () => {
+const MediaPage  = () => {
   const [mediaList, setMediaList] = useState([]);
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [commentVisibleIndex, setCommentVisibleIndex] = useState(null);
@@ -11,6 +11,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [fetchedComments, setFetchedComments] = useState({});
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -33,8 +34,27 @@ const HomePage = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  const toggleCommentVisibility = (index) => {
-    setCommentVisibleIndex(commentVisibleIndex === index ? null : index);
+  const toggleCommentVisibility = async (index, mediaId) => {
+    if (commentVisibleIndex === index) {
+      setCommentVisibleIndex(null);
+    } else {
+      setCommentVisibleIndex(index);
+      if (!fetchedComments[mediaId]) {
+        try {
+          const response = await axios.get(`http://localhost:8080/action/${mediaId}/comment`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          });
+          setFetchedComments((prevComments) => ({
+            ...prevComments,
+            [mediaId]: response.data,
+          }));
+        } catch (error) {
+          console.error('Error fetching comments:', error);
+        }
+      }
+    }
   };
 
   const handleLike = async (id) => {
@@ -47,12 +67,24 @@ const HomePage = () => {
 
   const updateMediaInteraction = async (id, action) => {
     try {
-      await fetch(`http://localhost:8080/media/${id}/${action}`, { method: 'PATCH' });
-      const response = await fetch('http://localhost:8080/media');
-      const data = await response.json();
-      setMediaList(data || []);
+      const response = await fetch(`http://localhost:8080/media/${id}/${action}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`, // Include JWT token
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error ${response.status}: ${errorText}`);
+      }
+
+      const data = await fetch('http://localhost:8080/media');
+      const newData = await data.json();
+      setMediaList(newData || []);
     } catch (error) {
-      console.error('Error updating media interaction:', error);
+      console.error('Error updating media interaction:', error.message);
+      setErrorMessage(error.message);
     }
   };
 
@@ -67,17 +99,21 @@ const HomePage = () => {
           },
         }
       );
-      setCommentText((prevCommentText) => ({
-        ...prevCommentText,
-        [id]: '', // Reset comment text after submission
+
+      // Assuming the response returns the newly created comment
+      const newComment = response.data; 
+
+      // Update fetched comments immediately
+      setFetchedComments((prevComments) => ({
+        ...prevComments,
+        [id]: [newComment, ...(prevComments[id] || [])],
       }));
 
-      const updatedComments = response.data; // Assuming the response gives back the updated comments
-      setMediaList((prevMediaList) =>
-        prevMediaList.map((media) =>
-          media.id === id ? { ...media, comments: updatedComments } : media
-        )
-      );
+      // Reset the comment text input
+      setCommentText((prevCommentText) => ({
+        ...prevCommentText,
+        [id]: '',
+      }));
     } catch (error) {
       console.error('There was an error submitting the comment!', error);
       setErrorMessage(error.response?.data?.message || 'Submission failed. Please try again.');
@@ -109,23 +145,14 @@ const HomePage = () => {
                 </video>
                 <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
                   <div style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}>
-                    <div
-                      onClick={() => handleLike(media.id)}
-                      style={{ cursor: 'pointer', marginRight: '20px' }}
-                    >
+                    <div onClick={() => handleLike(media.id)} style={{ cursor: 'pointer', marginRight: '20px' }}>
                       <FontAwesomeIcon icon={faThumbsUp} /> ({media.likes})
                     </div>
-                    <div
-                      onClick={() => handleDislike(media.id)}
-                      style={{ cursor: 'pointer', marginRight: '20px' }}
-                    >
+                    <div onClick={() => handleDislike(media.id)} style={{ cursor: 'pointer', marginRight: '20px' }}>
                       <FontAwesomeIcon icon={faThumbsDown} /> ({media.dislikes})
                     </div>
-                    <div
-                      onClick={() => toggleCommentVisibility(index)}
-                      style={{ cursor: 'pointer', marginRight: '20px' }}
-                    >
-                      <FontAwesomeIcon icon={faComment} /> ({media.comments?.length || 0})
+                    <div onClick={() => toggleCommentVisibility(index, media.id)} style={{ cursor: 'pointer', marginRight: '20px' }}>
+                      <FontAwesomeIcon icon={faComment} />
                     </div>
                   </div>
                   {commentVisibleIndex === index && (
@@ -170,19 +197,23 @@ const HomePage = () => {
                       <div style={{ marginTop: '10px' }}>
                         <h4>Comments:</h4>
                         <ul style={{ padding: '0', listStyleType: 'none' }}>
-                          {media.comments?.map((comment) => (
-                            <li
-                              key={comment.id}
-                              style={{
-                                margin: '5px 0',
-                                padding: '5px',
-                                backgroundColor: '#f8f8f8',
-                                borderRadius: '5px',
-                              }}
-                            >
-                              {comment.text}
-                            </li>
-                          )) || <li>No comments yet.</li>}
+                          {fetchedComments[media.id] && fetchedComments[media.id].length > 0 ? (
+                            fetchedComments[media.id].map((comment) => (
+                              <li
+                                key={comment.id}
+                                style={{
+                                  margin: '5px 0',
+                                  padding: '5px',
+                                  backgroundColor: '#f8f8f8',
+                                  borderRadius: '5px',
+                                }}
+                              >
+                                {comment.text}
+                              </li>
+                            ))
+                          ) : (
+                            <li>No comments yet.</li>
+                          )}
                         </ul>
                       </div>
                     </div>
@@ -191,9 +222,11 @@ const HomePage = () => {
               </div>
               <div style={{ marginLeft: '20px', flex: '1' }}>
                 <h2 style={{ margin: '0', fontSize: '1.5em' }}>{media.title}</h2>
-                <p style={{ margin: '10px 0' }}>
+                <div style={{ margin: '10px 0' }}>
                   {expandedIndex === index
-                    ? media.description
+                    ? media.description.split('\n').map((paragraph, idx) => (
+                        <p key={idx}>{paragraph}</p>
+                      ))
                     : media.description.length > 1500
                     ? `${media.description.substring(0, 1500)}...`
                     : media.description}
@@ -205,7 +238,7 @@ const HomePage = () => {
                       {expandedIndex === index ? ' Read Less' : ' Read More'}
                     </span>
                   )}
-                </p>
+                </div>
               </div>
             </div>
           </article>
@@ -213,8 +246,11 @@ const HomePage = () => {
       ) : (
         <div style={{ textAlign: 'center', fontSize: '20px' }}>No media available.</div>
       )}
+      {errorMessage && (
+        <div style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</div>
+      )}
     </div>
   );
 };
 
-export default HomePage;
+export default MediaPage ;

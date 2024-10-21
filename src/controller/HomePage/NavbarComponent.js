@@ -2,8 +2,8 @@ import React from 'react';
 import { Link,  useLocation  } from 'react-router-dom';
 import './NavbarComponent.css'; 
 import StockNews from '../Client/StockNews';
-import News from '../pages/News';
-import StockMarketList from '../pages/StockMarketList';
+import MediaPage from '../pages/News/News';
+import StockMarketList from '../pages/Stock/StockMarketList';
 
 const NavbarComponent = () => {
   const location = useLocation();
@@ -35,7 +35,7 @@ const NavbarComponent = () => {
       </div>
     </nav>
     {/* <StockMarketList/> */}
-    <News/>
+    <MediaPage />
    </div>
   );
 };

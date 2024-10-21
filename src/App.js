@@ -32,11 +32,12 @@ import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
 import EditUser from "./controller/Admin/User/updateUser";
 import EditGainer from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
 import Trading from "./controller/pages/Trade/trading";
-import TransactionForm from "./controller/pages/TransactionData/post";
+// import TransactionForm from "./controller/pages/TransactionData/post";
 import MostActivelyTradedPut from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
 import EditLooser from "./controller/Admin/StockList/UpdateLocalStock/TopLosersPut";
 import MostActivelyTradedUpdate from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
 import AddAdmin from "./controller/Admin/User/addUser";
+import StockDetail from "./controller/pages/Stock/StockDetail";
 function App() {
   const stockTicker = "IBM";
   return (
@@ -73,7 +74,8 @@ function App() {
           <Route path="/looser/get" element={<TopLosersGet/>}/>
           <Route path="/gain/get" element={<TopGainersGet/>}/>
           <Route path="/active/get" element={<MostActivelyTradedGet/>}/>
-          <Route path="/transaction" element={<TransactionForm />}/>
+          <Route path="/stocks/:ticker" component={< StockDetail />} />
+          {/* <Route path="/transaction" element={<TransactionForm />}/> */}
         </Routes>
       </div>
     </Router>

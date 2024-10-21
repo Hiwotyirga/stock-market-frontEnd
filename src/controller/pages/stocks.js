@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import StockMarketList from './StockMarketList'
+import StockMarketList from './Stock/StockMarketList'
 
 function Stocks
 () {
