@@ -47,20 +47,19 @@ function ImagePost() {
   };
 
   return (
-    <div className="container-fluid p-3" style={{fontSize:"10px"}}>
+    <div className="container-fluid p-3" style={{ fontSize: "10px" }}>
       {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4" style={{margin:" -28px", padding:"-50px"}}>
-        <h1 className="mb-0"  style={{fontSize:"30px" }}>Stock Market</h1>
-        <div style={{marginRight:"50px"}}>
-          <Logout /> {/* Use the Logout component */}
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded mb-4" style={{ margin: "-28px", padding: "-50px" }}>
+        <h1 className="mb-0" style={{ fontSize: "30px" }}>Stock Market</h1>
+        <div style={{ marginRight: "50px" }}>
+          <Logout />
         </div>
       </header>
 
-      {/* Registration form */}
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          <div className="form-group mb-3" style={{fontSize:"25px"}}>
+          <div className="form-group mb-3" style={{ fontSize: "25px" }}>
             <label htmlFor="file">Upload file</label>
             <input
               type="file"
@@ -69,28 +68,46 @@ function ImagePost() {
               onChange={(e) => setFile(e.target.files[0])}
             />
           </div>
-          <div className="form-group mb-3" style={{fontSize:"25px"}}>
+
+          <div className="form-group mb-3" style={{ fontSize: "25px" }}>
+            <label htmlFor="content">Title</label>
+            <textarea
+              type="text"
+              placeholder='Enter title'
+              className="form-control"
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              style={{ height: "50px" }}
+            />
+          </div>
+          <div className="form-group mb-3" style={{ fontSize: "25px" }}>
             <label htmlFor="description">Description</label>
-            <input
+            <textarea
               type="text"
               className="form-control"
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              style={{ height: "150px" }}
             />
           </div>
-          <div className="form-group mb-3" style={{fontSize:"25px"}}>
-            <label htmlFor="content">Content</label>
-            <input
-              type="text"
-              className="form-control"
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
+          
           <button type="submit" className="btn btn-primary w-100">Submit</button>
         </form>
+      </div>
+
+      {/* Display the uploaded content */}
+      <div className="mt-5">
+        <h2>Uploaded Content</h2>
+        <ul>
+          {list.map((item, index) => (
+            <li key={index}>
+              <h5>{item.content}</h5>
+              <p dangerouslySetInnerHTML={{ __html: item.description.replace(/\n/g, '<br />') }} />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

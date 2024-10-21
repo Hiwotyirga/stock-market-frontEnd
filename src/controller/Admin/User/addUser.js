@@ -5,10 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import swal from 'sweetalert';
 
-function RegisterUser() {
+function AddAdmin() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role] = useState("Admin"); // Fixed role
+  const [role, setRole] = useState(""); // Updated to be mutable
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ function RegisterUser() {
     };
    
     try {
-      const response = await axios.post("http://localhost:8080/register", data);
-      swal("SUCCESSFULLY LOGIN");
-      navigate('/contentdashbord'); 
+      const response = await axios.post("http://localhost:8080/auth/register", data);
+      swal("SUCCESSFULLY REGISTERED"); // Update success message
+      navigate('/contentdashbord');
     } catch (error) {
       if (error.response && error.response.status === 409) {
         swal('Email already exists. Please use a different email.');
@@ -39,7 +39,6 @@ function RegisterUser() {
   return (
     <div className="container-fluid p-3">
       <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-2 rounded mb-3" style={{ marginTop: "10px", height: "60px", margin:" -28px" }}>
-        {/* Header content (if needed) */}
       </header>
 
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
@@ -80,9 +79,18 @@ function RegisterUser() {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="role">Role</label>
-            <div className="form-control" style={{ cursor: 'default' }}>
-              Admin {/* Fixed text */}
-            </div>
+            <select
+              className="form-control"
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="">Select role</option>
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+              <option value="Manager">Manager</option>
+              {/* Add more roles as needed */}
+            </select>
           </div>
           <button type="submit" className="btn btn-primary w-100">Register</button>
         </form>
@@ -91,4 +99,4 @@ function RegisterUser() {
   );
 }
 
-export default RegisterUser;
+export default AddAdmin;

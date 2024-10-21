@@ -20,37 +20,18 @@ const TransactionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const jwtToken = localStorage.getItem('jwt');
-    if (!jwtToken) {
-      setMessage('You need to log in to create a transaction.');
-      return; // Stop if no token is available
-    }
-
-    console.log('JWT Token:', jwtToken); // Log JWT token for debugging
-    console.log('Form Data:', data); // Log form data for debugging
-
     try {
       const response = await axios.post('http://localhost:8080/transactions', data, {
         headers: {
-          Authorization: `Bearer ${jwtToken}`, // Include JWT token in the request headers
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-
-      // Notify the user of successful creation
+      
       swal("Transaction created successfully!");
-      setList((prevList) => [...prevList, response.data]); // Append the new transaction to the list
-
-      // Clear the form fields
-      setQuantity('');
-      setFullName('');
-      setEmail('');
-      setTransactionType('');
-      setMessage(''); 
+      setList(response.data); 
     } catch (error) {
-      // Log the error details for debugging
       console.error('Error response:', error.response?.data || error.message);
-      setMessage('Error creating transaction. Please try again.'); // Display a user-friendly error message
+      setMessage('Error creating transaction. Please try again.'); 
     }
   };
 

@@ -12,7 +12,7 @@ function ImageList() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('http://localhost:8080/media/files');
+        const response = await fetch('http://localhost:8080/media');
         const data = await response.json();
         setImages(data.items.map(image => ({ ...image, showFullDescription: false }))); // Extract items and add showFullDescription
       } catch (error) {
@@ -29,7 +29,7 @@ function ImageList() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/media/file/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/media/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
@@ -69,7 +69,7 @@ function ImageList() {
                 {/* <th>Number</th> */}
                 <th>Filename</th>
                 <th>Description</th>
-                <th>Post Time</th>
+                <th>Title</th>
                 <th>Action</th>
               </tr>
             </thead>

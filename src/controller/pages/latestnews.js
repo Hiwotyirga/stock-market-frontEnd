@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import News from './News'
+import MediaPage from './News'
 function LatestNews() {
   
     return (
@@ -33,7 +34,10 @@ function LatestNews() {
         </div>
       </nav>
     
-      <News />
+      {/* <News />
+       */}
+
+       <MediaPage/>
      </div>
         // </div>
   )

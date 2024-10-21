@@ -14,7 +14,7 @@ function UserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8080/register');
+        const response = await fetch('http://localhost:8080/auth/users');
         const data = await response.json();
         
         // Log the data to verify its structure
@@ -42,7 +42,7 @@ function UserList() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/register/remove/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/auth/users/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },

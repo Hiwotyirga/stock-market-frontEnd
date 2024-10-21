@@ -20,7 +20,6 @@ import WatchList from "./controller/pages/watchlist";
 import LatestNews from "./controller/pages/latestnews";
 import FileDetail from "./controller/Admin/News/FileDetail";
 import MediaDetail from "./controller/pages/MediaDetail";
-import RegisterUser from "./controller/Admin/User/addUser";
 import UserEdit from "./controller/Admin/User/updateUser";
 import LocalStockList from "./controller/Admin/StockList/LocalStock/Get";
 import LocalStock from "./controller/Admin/StockList/LocalStock/TopGainersPost";
@@ -30,7 +29,6 @@ import TopGainersGet from "./controller/Admin/StockList/LocalStock/TopGainersGet
 import MostActivelyTradedGet from "./controller/Admin/StockList/LocalStock/MostActivelyTradedGet";
 import TopGainersPost from "./controller/Admin/StockList/LocalStock/TopGainersPost";
 import TopLosersGet from "./controller/Admin/StockList/LocalStock/TopLosersGet";
-import LoginAdmin from "./controller/Admin/Auth/login";
 import EditUser from "./controller/Admin/User/updateUser";
 import EditGainer from "./controller/Admin/StockList/UpdateLocalStock/TopGainersPut";
 import Trading from "./controller/pages/Trade/trading";
@@ -38,6 +36,7 @@ import TransactionForm from "./controller/pages/TransactionData/post";
 import MostActivelyTradedPut from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
 import EditLooser from "./controller/Admin/StockList/UpdateLocalStock/TopLosersPut";
 import MostActivelyTradedUpdate from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
+import AddAdmin from "./controller/Admin/User/addUser";
 function App() {
   const stockTicker = "IBM";
   return (
@@ -46,9 +45,9 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/userList" element={<UserList />} />
+          <Route path="/adduser" element={<AddAdmin />}/>
           <Route path="/logout" element={<Logout />} />
           <Route path="" element={<Login />} />
-          <Route path="/stock-admin" element={<LoginAdmin />} />
           <Route path="/contentdashbord" element={<ContentDashBoard />} />
           <Route path="/stocknews" element={<StockNews />} />
           <Route path="/file/:id" component={FileDetail} />
@@ -62,10 +61,10 @@ function App() {
           <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/toploser" element={< TopLosersPOst/>}/>
           <Route path="/watchlist" element={<WatchList />} />
+
           <Route path="/trading" element={<Trading/>} />
           <Route path="/topGainer" element={< TopGainersPost/>}/>
           <Route path="/activetrade" element={<MostActivelyTradedPost/>}/>
-          <Route path="/adduser" element={<RegisterUser />} />
           <Route path="/edituser" element={<UserEdit />} />
           <Route path="/editgain/:id" element={<EditGainer />} />
           <Route path="/editloser/:id" element={<EditLooser />} />

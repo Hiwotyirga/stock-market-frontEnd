@@ -2,16 +2,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap';
 import swal from 'sweetalert';
+
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const[role,setRole]=useState("")
-  const [errorMessage, setErrorMessage] = useState("");
+  const [role, setRole] = useState("User"); 
   const navigate = useNavigate();
-  const [list, setList] =useState([])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,45 +18,37 @@ function Register() {
       name,
       email,
       password,
-      role
+      role 
     };
   
     try {
-      const response = await axios.post("http://localhost:8080/register", data);
-      setList(response.data);
-      swal("SUCCESSFULLY REGISTER")
-      navigate("");
-     
+      const response = await axios.post("http://localhost:8080/auth/register", data);
+      swal("SUCCESSFULLY REGISTER");
+      navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        
         swal('Email already exists. Please use a different email.');
       } else {
-        swal('Registration failed. Please try again.')
-        // setErrorMessage('Registration failed. Please try again.');
+        swal('Registration failed. Please try again.');
       }
     }
   };
   
-
   return (
-    <div className="container-fluid p-3">
-      {/* Header section */}
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-2 rounded mb-3" style={{ marginTop: "10px", height: "60px", margin:" -28px" }}>
-        <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>Register</h2>
-        <div>
-          <Button variant="primary">
-            <Link to="" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-          </Button>
-        </div>
-      </header>
-
-      {/* Registration form */}
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-        <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow" style={{ width: '300px', height: 'auto' }}>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          <div className="form-group mb-3">
-            <label htmlFor="name">Name</label>
+    <div className="container-fluid p-3 " style={{ 
+      backgroundImage: `url('/6c741c60bf84723ea1184eaf5bb19c59.jpg')`, 
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center', 
+      height: '100vh', 
+      width:"1330px",
+      marginRight:"0px"
+      
+      
+    }}>
+      <div className="d-flex justify-content-start align-items-center" style={{ height: '100%' }}>
+        <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow" style={{ width: '430px', height:"100%" }}>
+          <div className="form-group" style={{marginTop:"10px",marginBottom:"40px"}}>
+            <label htmlFor="name" style={{color:"green", fontSize:"25px"}}>Name</label>
             <input
               type="text"
               className="form-control"
@@ -66,9 +56,10 @@ function Register() {
               placeholder="Enter name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              style={{height:"70px", color:"black", fontSize:"20px"}}
             />
           </div>
-          <div className="form-group mb-3">
+          <div className="form-group mb-3" style={{color:"green", fontSize:"25px", marginBottom:"40px"}}>
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -77,9 +68,10 @@ function Register() {
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{height:"70px", color:"black", fontSize:"20px"}}
             />
           </div>
-          <div className="form-group mb-3">
+          <div className="form-group" style={{color:"green", fontSize:"25px", marginBottom:"40px"}}>
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -88,9 +80,11 @@ function Register() {
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={{height:"70px", color:"black", fontSize:"20px"}}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Register</button>
+          <button type="submit" className="btn btn-primary w-100" style={{ marginBottom: "50px",height:"70px", color:"black", fontSize:"25px" }}>Register</button>
+          <p style={{fontSize:"20px"}}>If you have an account? <Link to="/">Login</Link></p>
         </form>
       </div>
     </div>

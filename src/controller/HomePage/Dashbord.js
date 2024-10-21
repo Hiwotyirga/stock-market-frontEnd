@@ -79,7 +79,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/register/count');
+        const response = await axios.get('http://localhost:8080/auth/users/count');
         setUserCount(response.data.count);
       } catch (err) {
         swal('Failed to fetch user count');

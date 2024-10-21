@@ -15,10 +15,9 @@ function EditUser() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    // Fetch user details based on ID
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/register/user/${id}`);
+        const response = await axios.get(`http://localhost:8080/auth/users/${id}`);
         const user = response.data;
         setName(user.name);
         setEmail(user.email);
@@ -37,7 +36,7 @@ function EditUser() {
     const updatedData = { name, email, role, password };
 
     try {
-      const response = await axios.put(`http://localhost:8080/register/${id}`, updatedData, {
+      const response = await axios.put(`http://localhost:8080/auth/${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
@@ -59,12 +58,6 @@ function EditUser() {
     <div className="container-fluid p-3">
       {/* Header section */}
       <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-2 rounded mb-3" style={{ marginTop: "10px", height: "60px", margin:" -28px" }}>
-        {/* <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>Register</h2>
-        <div>
-          <Button variant="primary">
-            <Link to="/stock-admin" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-          </Button>
-        </div> */}
       </header>
 
       {/* Registration form */}
