@@ -1,0 +1,36 @@
+/* StockDetails.css */
+.stock-details {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+}
+
+.buy-sell-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.buy-button,
+.sell-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buy-button {
+    background-color: green;
+    color: white;
+}
+
+.sell-button {
+    background-color: red;
+    color: white;
+}

@@ -35,14 +35,12 @@ function Register() {
   };
   
   return (
-    <div className="container-fluid p-3 " style={{ 
+    <div  className="container-fluid p-0" 
+    style={{ 
       backgroundImage: `url('/6c741c60bf84723ea1184eaf5bb19c59.jpg')`, 
       backgroundSize: 'cover', 
       backgroundPosition: 'center', 
-      height: '100vh', 
-      width:"1330px",
-      marginRight:"0px"
-      
+      height: '100vh'
       
     }}>
       <div className="d-flex justify-content-start align-items-center" style={{ height: '100%' }}>

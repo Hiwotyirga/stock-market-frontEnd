@@ -4,6 +4,7 @@ import './NavbarComponent.css';
 import StockNews from '../Client/StockNews';
 import MediaPage from '../pages/News/News';
 import StockMarketList from '../pages/Stock/StockMarketList';
+import { SubscribeRegister } from '../Subscribe/SubscribeRegister';
 
 const NavbarComponent = () => {
   const location = useLocation();
@@ -22,8 +23,8 @@ const NavbarComponent = () => {
             <li className={`nav-item ${location.pathname === '/stocks/overview' ? 'active' : ''}`}>
               <Link to="/stocks/overview">Stocks</Link>
             </li>
-            <li className={`nav-item ${location.pathname === '/watchlist' ? 'active' : ''}`}>
-              <Link to="/watchlist">Watchlist</Link>
+            <li className={`nav-item ${location.pathname === '/payment' ? 'active' : ''}`}>
+              <Link to="/payment">Subscribe</Link>
             </li>
             {/* <li className={`nav-item ${location.pathname === '/analysis' ? 'active' : ''}`}>
               <Link to="/analysis">Analysis</Link>

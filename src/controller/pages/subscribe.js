@@ -2,9 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 // import News from './News'
 import MediaPage  from './News/News'
+import { SubscribeRegister } from '../Subscribe/SubscribeRegister'
 
 
-function LatestNews() {
+function Subscribe() {
   
     return (
         <div> <nav className="navbar">
@@ -15,6 +16,7 @@ function LatestNews() {
             <button className="search-button">🔍</button>
           </div>
     
+          {/* Menu */}
           <ul className="navbar-nav">
             <li className="nav-item active">
             <Link to='/latestnews'>Latest News</Link>
@@ -23,7 +25,7 @@ function LatestNews() {
               <Link to="/stocks/overview">Stocks</Link>
             </li>
             <li className="nav-item">
-            <Link to="/subscribe">Subscribe</Link>
+            <Link to="">Subscribe</Link>
             </li>
             <li className="nav-item">
               <Link to="/analysis">Analysis</Link>
@@ -35,13 +37,12 @@ function LatestNews() {
         </div>
       </nav>
     
-      {/* <News />
-       */}
-
-       <MediaPage />
+    
+hello
+       {/* <SubscribeRegister /> */}
      </div>
-        // </div>
+   
   )
 }
 
-export default LatestNews
+export default Subscribe

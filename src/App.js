@@ -16,7 +16,6 @@ import ImagePost from "./controller/Admin/News/imagePost";
 import ImageList from "./controller/Admin/News/imageList";
 import Stocks from "./controller/pages/stocks";
 import Analysis from "./controller/pages/analysis";
-import WatchList from "./controller/pages/watchlist";
 import LatestNews from "./controller/pages/latestnews";
 import FileDetail from "./controller/Admin/News/FileDetail";
 import MediaDetail from "./controller/pages/MediaDetail";
@@ -38,6 +37,10 @@ import EditLooser from "./controller/Admin/StockList/UpdateLocalStock/TopLosersP
 import MostActivelyTradedUpdate from "./controller/Admin/StockList/UpdateLocalStock/MostActiveTradePut";
 import AddAdmin from "./controller/Admin/User/addUser";
 import StockDetail from "./controller/pages/Stock/StockDetail";
+import StockMarketList from "./controller/pages/Stock/StockMarketList";
+import { SubscribeRegister } from "./controller/Subscribe/SubscribeRegister";
+import Subscribe from "./controller/pages/subscribe";
+import PaymentMethode from "./controller/Subscribe/PaymentMethode";
 function App() {
   const stockTicker = "IBM";
   return (
@@ -56,13 +59,10 @@ function App() {
           <Route path="/latestnews" element={<LatestNews />} />
           <Route path="/uploadFile" element={<ImagePost />} />
           <Route path="/imageList" element={<ImageList />} />
-          <Route path="/stocks/overview" element={<Stocks />} />
           <Route path="/analysis" element={<Analysis />} />
           <Route path="/media/:id" element={<MediaDetail />} />
           <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/toploser" element={< TopLosersPOst/>}/>
-          <Route path="/watchlist" element={<WatchList />} />
-
           <Route path="/trading" element={<Trading/>} />
           <Route path="/topGainer" element={< TopGainersPost/>}/>
           <Route path="/activetrade" element={<MostActivelyTradedPost/>}/>
@@ -74,8 +74,11 @@ function App() {
           <Route path="/looser/get" element={<TopLosersGet/>}/>
           <Route path="/gain/get" element={<TopGainersGet/>}/>
           <Route path="/active/get" element={<MostActivelyTradedGet/>}/>
-          <Route path="/stocks/:ticker" component={< StockDetail />} />
-          {/* <Route path="/transaction" element={<TransactionForm />}/> */}
+          <Route path="/subscribe" element={<SubscribeRegister />}/>
+          <Route path="/payment" element={<PaymentMethode/>} />
+          <Route path="/stocks/:ticker" element={<StockDetail/>} />
+          <Route path="/stocks/overview" element={<StockMarketList />} />
+         
         </Routes>
       </div>
     </Router>

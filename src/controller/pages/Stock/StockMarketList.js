@@ -10,40 +10,32 @@ const StockMarketList = () => {
     most_actively_traded: []
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/local-market/stocks', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-          },
-        });
-
-        const topGainers = [];
-        const topLosers = [];
-        const mostActivelyTraded = [];
-
-        response.data.forEach(item => {
-          if (item.top_gainers) {
-            topGainers.push(...item.top_gainers);
-          }
-          if (item.top_losers) {
-            topLosers.push(...item.top_losers);
-          }
-          if (item.most_actively_traded) {
-            mostActivelyTraded.push(...item.most_actively_traded);
-          }
-        });
+        const [gainersResponse, losersResponse, activeTradesResponse] = await Promise.all([
+          axios.get('http://localhost:8080/stocks/top-gainers', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+          }),
+          axios.get('http://localhost:8080/stocks/top-losers', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+          }),
+          axios.get('http://localhost:8080/stocks/most-active-trades', {
+            headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
+          })
+        ]);
 
         setStockData({
-          top_gainers: topGainers,
-          top_losers: topLosers,
-          most_actively_traded: mostActivelyTraded,
+          top_gainers: gainersResponse.data,
+          top_losers: losersResponse.data,
+          most_actively_traded: activeTradesResponse.data,
         });
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching stock data:', error);
+        setError(error);
+      } finally {
         setLoading(false);
       }
     };
@@ -55,8 +47,8 @@ const StockMarketList = () => {
     return <div className="loading">Loading...</div>;
   }
 
-  if (!stockData || !Array.isArray(stockData.top_gainers) || !Array.isArray(stockData.top_losers) || !Array.isArray(stockData.most_actively_traded)) {
-    return <div className="no-data">No data available</div>;
+  if (error) {
+    return <div className="error">Error fetching data: {error.message}</div>;
   }
 
   const renderColumn = (title, items, isLoser = false) => (
@@ -72,23 +64,20 @@ const StockMarketList = () => {
             <span className="header volume">Volume</span>
             <span className="header action">Action</span>
           </div>
-          {items.map((item) => {
-            const price = parseFloat(item.price);
-            return (
-              <div className="item" key={item.ticker}>
-                <span className="ticker">{item.ticker}</span>
-                <span className="price">${isNaN(price) ? 'N/A' : price.toFixed(2)}</span>
-                <span className="change-amount">${item.change_amount || item.changeAmount}</span>
-                <span className="change-percentage">{item.change_percentage || item.changePercentage}%</span>
-                <span className="volume">{item.volume}</span>
-                <Link to={`/stocks/${item.ticker}`}>
-                  <button className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}>
-                    View Details
-                  </button>
-                </Link>
-              </div>
-            );
-          })}
+          {items.map((item) => (
+            <div className="item" key={item.id || item.ticker}>
+              <span className="ticker">{item.ticker}</span>
+              <span className="price">${parseFloat(item.price).toFixed(2) || 'N/A'}</span>
+              <span className="change-amount">${item.change_amount || item.changeAmount}</span>
+              <span className="change-percentage">{item.change_percentage || item.changePercentage}%</span>
+              <span className="volume">{item.volume}</span>
+              <Link to={`/stocks/${item.ticker}?type=${title.toLowerCase().replace(' ', '-')}`}>
+                <button className={`buy-button ${isLoser ? 'loser-button' : 'gainer-button'}`}>
+                  View Details
+                </button>
+              </Link>
+            </div>
+          ))}
         </div>
       ) : (
         <p className="no-data">No data available</p>
@@ -98,8 +87,8 @@ const StockMarketList = () => {
 
   return (
     <div className="container">
-      {renderColumn('Top Gainers', stockData.top_gainers)} 
-      {renderColumn('Top Losers', stockData.top_losers, true)} 
+      {renderColumn('Top Gainers', stockData.top_gainers)}
+      {renderColumn('Top Losers', stockData.top_losers, true)}
       {renderColumn('Most Actively Traded Stocks', stockData.most_actively_traded)}
     </div>
   );
