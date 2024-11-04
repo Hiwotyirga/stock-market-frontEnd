@@ -13,28 +13,35 @@ function TopLosersGet() {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await fetch('http://localhost:8080/local-market/stocks');
-        const data = await response.json();
-        const gainers = data
-          .filter(item => item.top_losers && item.top_losers.length > 0)
-          .flatMap(item => item.top_losers.map(gainer => ({ ...gainer, parentId: item.id })));
-
-        setTopGainers(gainers);
+        const response = await axios.get('http://localhost:8080/top-loser/top-losers');
+        console.log("Fetched data:", response.data); // Log data to inspect structure
+        setTopGainers(response.data);
       } catch (error) {
         console.error('Error fetching stocks:', error);
+        swal('Failed to fetch stocks.');
       }
     };
 
     fetchStocks();
   }, []);
 
-  const handleEdit = (parentId) => {
-    navigate(`/editloser/${parentId}`); // Pass the stock id to the edit page
+  // Ensure the correct ID is passed for editing and deleting
+  const handleEdit = (id) => {
+    if (id) {
+      navigate(`/editloser/${id}`);
+    } else {
+      swal('No valid ID found for editing.');
+    }
   };
 
   const handleDelete = async (id) => {
+    if (!id) {
+      swal('No valid ID found for deletion.');
+      return;
+    }
+
     try {
-      const response = await axios.delete(`http://localhost:8080/local-market/stocks/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/top-loser/top-losers/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
@@ -42,7 +49,7 @@ function TopLosersGet() {
 
       if (response.status === 200) {
         swal('Stock deleted successfully.');
-        setTopGainers(topGainers.filter(stock => stock.parentId !== id)); // Update filter to use parentId
+        setTopGainers(topGainers.filter(stock => stock.id !== id));
       } else {
         swal('Failed to delete stock. Please try again.');
       }
@@ -90,14 +97,14 @@ function TopLosersGet() {
                       <span
                         style={{ marginRight: '20px', cursor: 'pointer' }}
                         className="action-icon"
-                        onClick={() => handleEdit(stock.parentId)} // Use parentId for editing
+                        onClick={() => handleEdit(stock.id)} // Use stock.id for editing
                         title="Edit"
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </span>
                       <span
                         className="action-icon"
-                        onClick={() => handleDelete(stock.parentId)} 
+                        onClick={() => handleDelete(stock.id)} // Use stock.id for deletion
                         title="Delete"
                         style={{ cursor: 'pointer' }}
                       >

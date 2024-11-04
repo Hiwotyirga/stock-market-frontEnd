@@ -1,36 +1,37 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 
+// Rename the component to start with an uppercase letter
 export const SubscribeRegister = () => { 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const role = "Subscriber"; // Set role as a fixed value
+  const [loading, setLoading] = useState(false); // Loading state
 
+  const { id } = useParams(); // This is fine as it is
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      email,
-      password,
-      role 
-    };
+    const data = { name, email, password };
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", data);
+      setLoading(true); // Start loading
+      const response = await axios.post(`http://localhost:8080/auth/subscribers/${id}`, data);
       swal("SUCCESSFULLY REGISTERED");
-      navigate("/");
+      navigate("/Customer");
     } catch (error) {
+      console.error("Error during registration:", error); // Log the error for debugging
       if (error.response && error.response.status === 409) {
         swal('Email already exists. Please use a different email.');
       } else {
         swal('Registration failed. Please try again.');
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -51,10 +52,10 @@ export const SubscribeRegister = () => {
         className="border p-4 bg-light rounded shadow" 
         style={{ width: '430px' }}
       >
-        <h2 style={{ textAlign: "center", color: "green", marginBottom: "20px" }}></h2>
+        <h2 style={{ textAlign: "center", color: "green", marginBottom: "20px" }}>Register</h2>
         
         <div className="form-group" style={{ marginBottom: "30px" }}>
-          <label htmlFor="name" style={{ color: "green", fontSize: "20px" }}>Campany Name</label>
+          <label htmlFor="name" style={{ color: "green", fontSize: "20px" }}>Company Name</label>
           <input
             type="text"
             className="form-control"
@@ -62,12 +63,13 @@ export const SubscribeRegister = () => {
             placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
             style={{ height: "50px", fontSize: "18px" }}
           />
         </div>
         
         <div className="form-group" style={{ marginBottom: "30px" }}>
-          <label htmlFor="email" style={{ color: "green", fontSize: "20px" }}>Campany Email</label>
+          <label htmlFor="email" style={{ color: "green", fontSize: "20px" }}>Company Email</label>
           <input
             type="email"
             className="form-control"
@@ -75,6 +77,7 @@ export const SubscribeRegister = () => {
             placeholder="Enter Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
             style={{ height: "50px", fontSize: "18px" }}
           />
         </div>
@@ -88,19 +91,8 @@ export const SubscribeRegister = () => {
             placeholder="Enter Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
             style={{ height: "50px", fontSize: "18px" }}
-          />
-        </div>
-
-        <div className="form-group" style={{ marginBottom: "30px" }}>
-          <label htmlFor="role" style={{ color: "green", fontSize: "20px" }}>Role</label>
-          <input
-            type="text"
-            className="form-control"
-            id="role"
-            value={role}
-            readOnly
-            style={{ height: "50px", fontSize: "18px", backgroundColor: "#e9ecef", color: "#6c757d" }}
           />
         </div>
 
@@ -108,8 +100,9 @@ export const SubscribeRegister = () => {
           type="submit" 
           className="btn btn-primary w-100" 
           style={{ height: "50px", fontSize: "20px" }}
+          disabled={loading}
         >
-          Next
+          {loading ? 'Submitting...' : 'Next'}
         </button>
       </form>
     </div>

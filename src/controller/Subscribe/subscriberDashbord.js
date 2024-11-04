@@ -3,7 +3,7 @@ import "../../App.css";
 import StockNews from "../Client/StockNews";
 // import NewsPost from "../News/newsPost";
 import ImageList from "../Admin/News/imageList";
-import DashBoard from "./Dashbord";
+// import Dashboard from "../HomePage/Dashbord";
 import UserList from "../Admin/User/userList";
 import { FaHome, FaUser, FaCog, FaSearch } from "react-icons/fa";
 import LocalStockList from "../Admin/StockList/LocalStock/Get";
@@ -11,8 +11,9 @@ import TopLosersGet from "../Admin/StockList/LocalStock/TopLosersGet";
 import MostActivelyTradedGet from "../Admin/StockList/LocalStock/MostActivelyTradedGet";
 import TopGainersGet from "../Admin/StockList/LocalStock/TopGainersGet";
 import SubscriberList from "../Admin/Subscriber/SubscriberList";
+import Dashboard from "../HomePage/Dashbord";
 
-function ContentDashBoard() {
+function SubscriberDashbord() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -79,13 +80,13 @@ function ContentDashBoard() {
               <FaHome style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>DashBoard</span>}
             </li>
-            <li
+            {/* <li
               style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("User Admin")}
             >
               <FaUser style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>Media</span>}
-            </li>
+            </li> */}
             <li
               style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("Content Admin")}
@@ -103,7 +104,7 @@ function ContentDashBoard() {
             <li
               style={{ padding: "10px 15px", cursor: "pointer", color: "#ECF0F1", position: "relative" }}
             >
-              <button
+              {/* <button
                 onClick={toggleLocalStockDropdown}
                 style={{
                   background: "none",
@@ -118,8 +119,8 @@ function ContentDashBoard() {
                 }}
               >
                 <FaSearch style={{ fontSize: "24px" }} />
-                {isOpen && <span style={{ marginLeft: "10px" }}>Subscriber</span>}
-              </button>
+                {isOpen && <span style={{ marginLeft: "10px" }}>Local Stock List</span>}
+              </button> */}
               {localStockDropdownOpen && (
                 <ul
                   style={{
@@ -206,17 +207,17 @@ function ContentDashBoard() {
           flex: 1,
         }}
       >
-        {activeTab === "Home" && <DashBoard />}
-        {activeTab === "User Admin" && <ImageList />}
-        {activeTab === "Subsriber" && <SubscriberList />}
+        {activeTab === "Home" && <Dashboard />}
+        {/* {activeTab === "User Admin" && <ImageList />} */}
+        {/* {activeTab === "Subsriber" && <SubscriberList />} */}
         {activeTab === "Content Admin" && <UserList />}
         {activeTab === "Top Gainers" && <TopGainersGet/>}
         {activeTab === "Top Losers" && <TopLosersGet/>}
         {activeTab === "Most Actively Traded" && <MostActivelyTradedGet/>}
-        {activeTab === "Stock News" && <StockNews />}
+        {/* {activeTab === "Stock News" && <StockNews />} */}
       </div>
     </div>
   );
 }
 
-export default ContentDashBoard;
+export default SubscriberDashbord;
