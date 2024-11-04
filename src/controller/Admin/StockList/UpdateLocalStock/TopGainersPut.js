@@ -5,30 +5,30 @@ import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function EditGainer() {
-  const [gainer, setGainer] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
+  const [ticker, setTicker] = useState('');
+  const [price, setPrice] = useState('');
+  const [change_amount, setChangeAmount] = useState('');
+  const [change_percentage, setChangePercentage] = useState('');
+  const [volume, setVolume] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the stock id from the URL parameters
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/local-market/stocks/${id}`);
-        // Set the data directly to gainer, assuming your API returns the correct structure
-        if (response.data.top_gainers && response.data.top_gainers.length > 0) {
-          const stock = response.data.top_gainers[0];
-          setGainer({
-            ticker: stock.ticker,
-            price: stock.price,
-            changeAmount: stock.change_amount,
-            changePercentage: stock.change_percentage,
-            volume: stock.volume,
-          });
-        } else {
-          swal('No stock data found for this ID.');
-        }
+        console.log("Fetching data for id:", id);
+        const response = await axios.get(`http://localhost:8080/top-gainer/most-active-trades/${id}`);
+        const stockData = response.data;
+
+        setTicker(stockData.ticker);
+        setPrice(stockData.price);
+        setChangeAmount(stockData.change_amount);
+        setChangePercentage(stockData.change_percentage);
+        setVolume(stockData.volume);
       } catch (error) {
-        console.error('Error fetching stock data:', error);
-        swal('An error occurred while fetching stock data.');
+        console.error('Error fetching stock data:', error.response ? error.response.data : error.message);
+        swal(`An error occurred while fetching stock data: ${error.message}`);
       }
     };
 
@@ -37,90 +37,98 @@ function EditGainer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedStockData = {
-      top_gainers: [
-        {
-          ticker: gainer.ticker,
-          price: gainer.price,
-          change_amount: gainer.changeAmount,
-          change_percentage: gainer.changePercentage,
-          volume: gainer.volume,
-        },
-      ],
+
+    const data = {
+      ticker,
+      price: parseFloat(price),
+      change_amount: parseFloat(change_amount),
+      change_percentage: parseFloat(change_percentage),
+      volume: parseInt(volume, 10),
     };
 
     try {
-      await axios.put(`http://localhost:8080/local-market/stocks/${id}`, updatedStockData);
+      setIsLoading(true);
+      await axios.put(`http://localhost:8080/top-gainer/top-gainers/${id}`, data);
       swal('Stock Updated Successfully!');
-      navigate('/contentdashbord');
+      navigate('/client');
     } catch (error) {
-      swal('An error occurred while updating the stock. Please try again.');
+      console.error('Error updating stock:', error.response ? error.response.data : error.message);
+      swal(`An error occurred while updating the stock: ${error.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="container-fluid p-3">
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-45px",  width:"1400", height:"70px"}}></header>
+      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-45px", width: "1400px", height: "70px" }}></header>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
-          <h3>Edit Stock</h3>
+          <h3>Most Gainer</h3>
+
           <div className="form-group mb-3">
-            <label htmlFor="gainersTicker">Ticker</label>
+            <label htmlFor="ticker">Ticker</label>
             <input
               type="text"
               className="form-control"
-              id="gainersTicker"
+              id="ticker"
               placeholder="Enter Ticker"
-              value={gainer.ticker}
-              onChange={(e) => setGainer({ ...gainer, ticker: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersPrice">Price</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersPrice"
-              placeholder="Enter Price"
-              value={gainer.price}
-              onChange={(e) => setGainer({ ...gainer, price: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersChangeAmount">Change Amount</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersChangeAmount"
-              placeholder="Enter Change Amount"
-              value={gainer.changeAmount}
-              onChange={(e) => setGainer({ ...gainer, changeAmount: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersChangePercentage">Change Percentage</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersChangePercentage"
-              placeholder="Enter Change Percentage"
-              value={gainer.changePercentage}
-              onChange={(e) => setGainer({ ...gainer, changePercentage: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersVolume">Volume</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersVolume"
-              placeholder="Enter Volume"
-              value={gainer.volume}
-              onChange={(e) => setGainer({ ...gainer, volume: e.target.value })}
+              value={ticker}
+              onChange={(e) => setTicker(e.target.value)}
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Update Stock</button>
+          <div className="form-group mb-3">
+            <label htmlFor="price">Price</label>
+            <input
+              type="text"
+              className="form-control"
+              id="price"
+              placeholder="Enter Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="changeAmount">Change Amount</label>
+            <input
+              type="text"
+              className="form-control"
+              id="changeAmount"
+              placeholder="Enter Change Amount"
+              value={change_amount}
+              onChange={(e) => setChangeAmount(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="changePercentage">Change Percentage</label>
+            <input
+              type="text"
+              className="form-control"
+              id="changePercentage"
+              placeholder="Enter Change Percentage"
+              value={change_percentage}
+              onChange={(e) => setChangePercentage(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="volume">Volume</label>
+            <input
+              type="text"
+              className="form-control"
+              id="volume"
+              placeholder="Enter Volume"
+              value={volume}
+              onChange={(e) => setVolume(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+            {isLoading ? 'Submitting...' : 'Submit'}
+          </button>
         </form>
       </div>
     </div>

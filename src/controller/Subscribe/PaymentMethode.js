@@ -1,21 +1,43 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function PaymentMethode() {
-  const [selectedMethod, setSelectedMethod] = useState('');
+  const [Method, setSelectedMethod] = useState('');
+  const navigate = useNavigate(); // To navigate after submission
 
   const handleSelection = (e) => {
     setSelectedMethod(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedMethod) {
-      alert('Please select a payment method.');
-      return;
+    if (!Method) {
+        alert('Please select a payment method.');
+        return;
     }
-    alert(`You selected ${selectedMethod} as your payment method.`);
-  };
+
+    try {
+        // Sending the selected payment method as a JSON object
+        const response = await axios.post("http://localhost:8080/payment-methods", { Method });
+
+        console.log('Response:', response.data); // Log the entire response for debugging
+
+        // Ensure that you have a valid id here
+        const paymentMethodId = response.data.id; // Assuming your API returns an id for the created payment method
+
+        if (paymentMethodId) {
+            alert('Payment method saved successfully.');
+            navigate(`/subscribe/${paymentMethodId}`); // Use the returned id
+        } else {
+            alert('Failed to retrieve payment method ID.');
+        }
+
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message); // Log detailed error information
+        alert('There was an error processing your payment method. Please try again.');
+    }
+};
 
   return (
     <div style={{
@@ -44,7 +66,7 @@ function PaymentMethode() {
           Welcome! We are glad to have you with us. We believe you'll be satisfied with our service.
         </p>
       </div>
-      
+
       <form 
         onSubmit={handleSubmit} 
         style={{
@@ -62,7 +84,7 @@ function PaymentMethode() {
         <h2 style={{ color: '#333', marginBottom: '20px' }}>Select Payment Method</h2>
         
         <select 
-          value={selectedMethod} 
+          value={Method} 
           onChange={handleSelection} 
           required
           style={{
@@ -94,9 +116,7 @@ function PaymentMethode() {
             transition: 'background-color 0.3s ease',
           }}
         >
-          <Link to="/subscribe" style={{ color: 'white', textDecoration: 'none' }}>
-            Next
-          </Link>
+          Next
         </button>
       </form>
     </div>

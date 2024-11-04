@@ -5,100 +5,132 @@ import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function TopLosersPOst() {
-  const [gainers, setGainers] = useState({ ticker: '', price: '', changeAmount: '', changePercentage: '', volume: '' });
+  const [ticker, setTicker] = useState('');
+  const [price, setPrice] = useState('');
+  const [change_amount, setChangeAmount] = useState('');
+  const [change_percentage, setChangePercentage] = useState('');
+  const [volume, setVolume] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const stockData = {
-      lastUpdated: new Date().toISOString(), // Automatically get the current date
-      top_gainers: [],
-      top_losers: [{
-        ticker: gainers.ticker,
-        price: gainers.price,
-        change_amount: gainers.changeAmount,
-        change_percentage: gainers.changePercentage,
-        volume: gainers.volume,
-      }], 
-      most_actively_traded: [] 
+    // Prepare data to match backend expectations
+    const data = {
+      ticker,
+      price: parseFloat(price),               // Convert to number
+      change_amount: parseFloat(change_amount), // Convert to number
+      change_percentage: parseFloat(change_percentage), // Convert to number
+      volume: parseInt(volume, 10),            // Convert to integer
     };
 
+    setIsLoading(true);
+
     try {
-      const response = await axios.post('http://localhost:8080/local-market/stocks', stockData);
-      console.log('Response data:', response.data); 
+      // Make POST request to backend API
+      const response = await axios.post('http://localhost:8080/top-loser/top-losers', data);
+      console.log('Response data:', response.data);
+
+      // Success message and redirect
       swal('Stock Data Submitted Successfully!');
-      navigate('/contentdashbord'); 
+      navigate('/client');
     } catch (error) {
-      console.error('There was an error submitting the stock data!', error);
-      swal('An error occurred. Please try again.');
+      // Handle and display error
+      console.error('Error during submission:', error.response ? error.response.data : error.message);
+      swal('Error submitting stock data.');
+    } finally {
+      setIsLoading(false); 
     }
   };
 
   return (
     <div className="container-fluid p-3">
-      <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-17px" }}></header>
+      <header
+        className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded"
+        style={{ margin: "-17px" }}
+      >
+        {/* <h1>Submit Top Gainer</h1> */}
+      </header>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
         <form onSubmit={handleSubmit} className="border p-4 bg-light rounded shadow">
-          {/* Top Gainers Section */}
-          <h3>Top Looser</h3>
+          <h3>Top Loser</h3>
+
+          {/* Ticker Input */}
           <div className="form-group mb-3">
-            <label htmlFor="gainersTicker">Ticker</label>
+            <label htmlFor="ticker">Ticker</label>
             <input
               type="text"
               className="form-control"
-              id="gainersTicker"
+              id="ticker"
               placeholder="Enter Ticker"
-              value={gainers.ticker}
-              onChange={(e) => setGainers({ ...gainers, ticker: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersPrice">Price</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersPrice"
-              placeholder="Enter Price"
-              value={gainers.price}
-              onChange={(e) => setGainers({ ...gainers, price: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersChangeAmount">Change Amount</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersChangeAmount"
-              placeholder="Enter Change Amount"
-              value={gainers.changeAmount}
-              onChange={(e) => setGainers({ ...gainers, changeAmount: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersChangePercentage">Change Percentage</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersChangePercentage"
-              placeholder="Enter Change Percentage"
-              value={gainers.changePercentage}
-              onChange={(e) => setGainers({ ...gainers, changePercentage: e.target.value })}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="gainersVolume">Volume</label>
-            <input
-              type="text"
-              className="form-control"
-              id="gainersVolume"
-              placeholder="Enter Volume"
-              value={gainers.volume}
-              onChange={(e) => setGainers({ ...gainers, volume: e.target.value })}
+              value={ticker}
+              onChange={(e) => setTicker(e.target.value)}
+              required
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Submit</button>
+          {/* Price Input */}
+          <div className="form-group mb-3">
+            <label htmlFor="price">Price</label>
+            <input
+              type="text"
+              className="form-control"
+              id="price"
+              placeholder="Enter Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Change Amount Input */}
+          <div className="form-group mb-3">
+            <label htmlFor="changeAmount">Change Amount</label>
+            <input
+              type="text"
+              className="form-control"
+              id="changeAmount"
+              placeholder="Enter Change Amount"
+              value={change_amount}
+              onChange={(e) => setChangeAmount(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Change Percentage Input */}
+          <div className="form-group mb-3">
+            <label htmlFor="changePercentage">Change Percentage</label>
+            <input
+              type="text"
+              className="form-control"
+              id="changePercentage"
+              placeholder="Enter Change Percentage"
+              value={change_percentage}
+              onChange={(e) => setChangePercentage(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Volume Input */}
+          <div className="form-group mb-3">
+            <label htmlFor="volume">Volume</label>
+            <input
+              type="text"
+              className="form-control"
+              id="volume"
+              placeholder="Enter Volume"
+              value={volume}
+              onChange={(e) => setVolume(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+            {isLoading ? 'Submitting...' : 'Submit'}
+          </button>
         </form>
       </div>
     </div>

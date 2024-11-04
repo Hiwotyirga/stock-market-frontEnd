@@ -5,54 +5,40 @@ import swal from 'sweetalert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function MostActivelyTradedPost() {
-  const [gainers, setGainers] = useState({
-    ticker: '',
-    price: '',
-    changeAmount: '',
-    changePercentage: '',
-    volume: ''
-  });
+  const [ticker, setTicker] = useState('');
+  const [price, setPrice] = useState('');
+  const [change_amount, setChangeAmount] = useState('');
+  const [change_percentage, setChangePercentage] = useState('');
+  const [volume, setVolume] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation (you can customize it as needed)
-    if (!gainers.ticker || !gainers.price || !gainers.changeAmount || !gainers.changePercentage || !gainers.volume) {
-      swal('Please fill in all fields.');
-      return;
-    }
-
-    const stockData = {
-      lastUpdated: new Date().toISOString(),
-      top_gainers: [],
-      top_losers: [],
-      most_actively_traded: [
-        {
-          ticker: gainers.ticker,
-          price: gainers.price,
-          change_amount: gainers.changeAmount,
-          change_percentage: gainers.changePercentage,
-          volume: gainers.volume,
-        }
-      ]
+    const data = {
+        ticker,
+        price: parseFloat(price), // Convert to number
+        change_amount: parseFloat(change_amount), // Convert to number
+        change_percentage: parseFloat(change_percentage), // Convert to number
+        volume: parseInt(volume, 10), // Convert to integer
     };
 
-    try {
-      setIsLoading(true); // Start loading
-      const response = await axios.post('http://localhost:8080/local-market/stocks', stockData);
-      console.log('Response data:', response.data); // Log response for debugging
-      swal('Stock Data Submitted Successfully!');
-      navigate('/contentdashbord'); // Navigate to the dashboard after successful submission
-    } catch (error) {
-      console.error('Error submitting stock data:', error);
-      swal('An error occurred. Please try again.');
-    } finally {
-      setIsLoading(false); // Stop loading
-    }
-  };
+    setIsLoading(true);
 
+    try {
+        const response = await axios.post('http://localhost:8080/most-actively-traded/most-active-trades', data);
+        console.log('Response data:', response.data); // Log response for debugging
+        swal('Stock Data Submitted Successfully!');
+        navigate('/client'); // Navigate after successful submission
+    } catch (error) {
+        console.error('Error during submission:', error.response ? error.response.data : error.message);
+        swal('Error submitting stock data.');
+    } finally {
+        setIsLoading(false); // Stop loading
+    }
+};
+  
   return (
     <div className="container-fluid p-3">
       <header className="d-flex justify-content-between align-items-center bg-secondary text-white p-3 rounded" style={{ margin: "-17px" }}></header>
@@ -61,62 +47,62 @@ function MostActivelyTradedPost() {
           <h3>Most Actively Traded</h3>
           
           <div className="form-group mb-3">
-            <label htmlFor="gainersTicker">Ticker</label>
+            <label htmlFor="ticker">Ticker</label>
             <input
               type="text"
               className="form-control"
-              id="gainersTicker"
+              id="ticker"
               placeholder="Enter Ticker"
-              value={gainers.ticker}
-              onChange={(e) => setGainers({ ...gainers, ticker: e.target.value })}
+              value={ticker}
+              onChange={(e) => setTicker(e.target.value)}
             />
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="gainersPrice">Price</label>
+            <label htmlFor="price">Price</label>
             <input
               type="text"
               className="form-control"
-              id="gainersPrice"
+              id="price"
               placeholder="Enter Price"
-              value={gainers.price}
-              onChange={(e) => setGainers({ ...gainers, price: e.target.value })}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="gainersChangeAmount">Change Amount</label>
+            <label htmlFor="changeAmount">Change Amount</label>
             <input
               type="text"
               className="form-control"
-              id="gainersChangeAmount"
+              id="changeAmount"
               placeholder="Enter Change Amount"
-              value={gainers.changeAmount}
-              onChange={(e) => setGainers({ ...gainers, changeAmount: e.target.value })}
+              value={change_amount}
+              onChange={(e) => setChangeAmount(e.target.value)}
             />
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="gainersChangePercentage">Change Percentage</label>
+            <label htmlFor="changePercentage">Change Percentage</label>
             <input
               type="text"
               className="form-control"
-              id="gainersChangePercentage"
+              id="changePercentage"
               placeholder="Enter Change Percentage"
-              value={gainers.changePercentage}
-              onChange={(e) => setGainers({ ...gainers, changePercentage: e.target.value })}
+              value={change_percentage}
+              onChange={(e) => setChangePercentage(e.target.value)}
             />
           </div>
 
           <div className="form-group mb-3">
-            <label htmlFor="gainersVolume">Volume</label>
+            <label htmlFor="volume">Volume</label>
             <input
               type="text"
               className="form-control"
-              id="gainersVolume"
+              id="volume"
               placeholder="Enter Volume"
-              value={gainers.volume}
-              onChange={(e) => setGainers({ ...gainers, volume: e.target.value })}
+              value={volume}
+              onChange={(e) => setVolume(e.target.value)}
             />
           </div>
 
