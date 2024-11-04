@@ -3,16 +3,15 @@ import "../../App.css";
 import StockNews from "../Client/StockNews";
 // import NewsPost from "../News/newsPost";
 import ImageList from "../Admin/News/imageList";
-import DashBoard from "./Dashbord";
 import UserList from "../Admin/User/userList";
 import { FaHome, FaUser, FaCog, FaSearch } from "react-icons/fa";
 import LocalStockList from "../Admin/StockList/LocalStock/Get";
 import TopLosersGet from "../Admin/StockList/LocalStock/TopLosersGet";
 import MostActivelyTradedGet from "../Admin/StockList/LocalStock/MostActivelyTradedGet";
 import TopGainersGet from "../Admin/StockList/LocalStock/TopGainersGet";
-import SubscriberList from "../Admin/Subscriber/SubscriberList";
+import Dashboard from "../HomePage/Dashbord";
 
-function ContentDashBoard() {
+function ClientDashBoard() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -83,8 +82,8 @@ function ContentDashBoard() {
               style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
               onClick={() => handleTabClick("User Admin")}
             >
-              <FaUser style={{ fontSize: "24px" }} />
-              {isOpen && <span style={{ marginLeft: "10px" }}>Media</span>}
+              {/* <FaUser style={{ fontSize: "24px" }} /> */}
+              {/* {isOpen && <span style={{ marginLeft: "10px" }}>Media</span>} */}
             </li>
             <li
               style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
@@ -92,13 +91,6 @@ function ContentDashBoard() {
             >
               <FaUser style={{ fontSize: "24px" }} />
               {isOpen && <span style={{ marginLeft: "10px" }}>User</span>}
-            </li>
-            <li
-              style={{ padding: "10px 15px", display: "flex", alignItems: "center", cursor: "pointer", color: "#ECF0F1" }}
-              onClick={() => handleTabClick("Subsriber")}
-            >
-              <FaUser style={{ fontSize: "24px" }} />
-              {isOpen && <span style={{ marginLeft: "10px" }}>Subscribe</span>}
             </li>
             <li
               style={{ padding: "10px 15px", cursor: "pointer", color: "#ECF0F1", position: "relative" }}
@@ -118,7 +110,7 @@ function ContentDashBoard() {
                 }}
               >
                 <FaSearch style={{ fontSize: "24px" }} />
-                {isOpen && <span style={{ marginLeft: "10px" }}>Subscriber</span>}
+                {isOpen && <span style={{ marginLeft: "10px" }}>Local Stock List</span>}
               </button>
               {localStockDropdownOpen && (
                 <ul
@@ -206,9 +198,8 @@ function ContentDashBoard() {
           flex: 1,
         }}
       >
-        {activeTab === "Home" && <DashBoard />}
+        {activeTab === "Home" && <Dashboard />}
         {activeTab === "User Admin" && <ImageList />}
-        {activeTab === "Subsriber" && <SubscriberList />}
         {activeTab === "Content Admin" && <UserList />}
         {activeTab === "Top Gainers" && <TopGainersGet/>}
         {activeTab === "Top Losers" && <TopLosersGet/>}
@@ -219,4 +210,4 @@ function ContentDashBoard() {
   );
 }
 
-export default ContentDashBoard;
+export default ClientDashBoard;

@@ -136,7 +136,8 @@ function Dashboard() {
             <div className="col-md-4">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Local Stock : {localStock}</h5>
+                <h5 className="card-title">Subscribe : {localStock}</h5>
+                  {/* <h5 className="card-title">Local Stock : {localStock}</h5> */}
                 </div>
               </div>
             </div>

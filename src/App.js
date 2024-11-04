@@ -41,6 +41,10 @@ import StockMarketList from "./controller/pages/Stock/StockMarketList";
 import { SubscribeRegister } from "./controller/Subscribe/SubscribeRegister";
 import Subscribe from "./controller/pages/subscribe";
 import PaymentMethode from "./controller/Subscribe/PaymentMethode";
+import SubscribeLogin from "./controller/Subscribe/SubscribeLogin";
+import ClientDashBoard from "./controller/Client/ClientDashBoard";
+import SubscriberList from "./controller/Admin/Subscriber/SubscriberList";
+import SubscriberDashbord from "./controller/Subscribe/subscriberDashbord";
 function App() {
   const stockTicker = "IBM";
   return (
@@ -64,20 +68,28 @@ function App() {
           <Route path="/edituser/:id" element={<EditUser />} />
           <Route path="/toploser" element={< TopLosersPOst/>}/>
           <Route path="/trading" element={<Trading/>} />
-          <Route path="/topGainer" element={< TopGainersPost/>}/>
+          <Route path="/topGainer" element={< TopGainersPost/>}/>         
+          <Route path="/most-actively-traded/:id" element={<MostActivelyTradedPut />} /> 
           <Route path="/activetrade" element={<MostActivelyTradedPost/>}/>
+
           <Route path="/edituser" element={<UserEdit />} />
           <Route path="/editgain/:id" element={<EditGainer />} />
           <Route path="/editloser/:id" element={<EditLooser />} />
-          <Route path="/most-actively-traded/:id" element={<MostActivelyTradedPut />} /> 
+
           <Route path="/localstocklist" element={<LocalStockList />} />
           <Route path="/looser/get" element={<TopLosersGet/>}/>
           <Route path="/gain/get" element={<TopGainersGet/>}/>
-          <Route path="/active/get" element={<MostActivelyTradedGet/>}/>
-          <Route path="/subscribe" element={<SubscribeRegister />}/>
-          <Route path="/payment" element={<PaymentMethode/>} />
+          <Route path="/active/get" element={<MostActivelyTradedGet/>}/>        
           <Route path="/stocks/:ticker" element={<StockDetail/>} />
           <Route path="/stocks/overview" element={<StockMarketList />} />
+
+          <Route path="/payment" element={<PaymentMethode />} />
+          <Route path="/Customer" element={<SubscribeLogin />} />
+         <Route path="/subscribe/:id" element={<SubscribeRegister />} />
+          <Route path="/client" element={<ClientDashBoard />} />
+          <Route path="/subscriber" element={<SubscriberList />} />
+          <Route path="/subscriber/dashboard" element={<SubscriberDashbord />} />
+
          
         </Routes>
       </div>
